@@ -13,18 +13,18 @@ class ProductPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ProductAppBar(),
-      body: Container(
-        color: Colors.deepPurple,
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // ProductImage(imageUrl: productData.image,),
-            // SizedBox(height: 16.0),
-            ProductInfo(productData: productData,),
-            Spacer(),
-            ProductActions(),
-          ],
+      body: SingleChildScrollView(
+        child: Container(
+          color: Colors.deepPurple,
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ProductInfo(productData: productData,),
+              // Spacer(),
+              ProductActions(productData: productData,),
+            ],
+          ),
         ),
       ),
     );

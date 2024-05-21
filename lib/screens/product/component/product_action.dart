@@ -1,6 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+
+import '../../../models/cart.dart';
+import '../../../models/product_model.dart';
 
 class ProductActions extends StatelessWidget {
+  final Products productData;
+
+  ProductActions({required this.productData});
+
+  Future<void> addToCart(Products productData) async {
+    final box = await Hive.openBox<Cart>('cartBox'); // Open the 'cartBox'
+
+    // Create a Cart object from the product data
+    final cartItem = Cart(productData.title!, productData.price!.toDouble());
+
+    // Add the cart item to the box
+    await box.add(cartItem);
+
+    // Print the contents of the box to the console
+    print('Current cart contents:');
+    box.values.forEach((item) {
+      print('Name: ${item.name}, Price: ${item.price}');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -17,6 +41,7 @@ class ProductActions extends StatelessWidget {
                 actions: [
                   TextButton(
                     onPressed: () {
+                      addToCart(productData);
                       Navigator.of(context).pop();
                     },
                     child: Text("OK"),

@@ -52,7 +52,7 @@ class _ProductInfoState extends State<ProductInfo> {
         ),
         SizedBox(height: 8.0),
         Text(
-          'Product Name',
+          widget.productData.title!,
           style: TextStyle(
             fontSize: 18.0,
             color: Colors.white,
@@ -60,7 +60,7 @@ class _ProductInfoState extends State<ProductInfo> {
         ),
         SizedBox(height: 8.0),
         Text(
-          'Product Description',
+          widget.productData.description!,
           style: TextStyle(
             fontSize: 16.0,
             color: Colors.white,

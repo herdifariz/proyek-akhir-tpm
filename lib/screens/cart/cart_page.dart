@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+
+import '../../models/cart.dart';
 
 class CartPage extends StatelessWidget {
   @override
@@ -18,46 +21,32 @@ class CartPage extends StatelessWidget {
           color: Colors.deepPurple
         ),),
       ),
-      body: Container(
-        color: Colors.deepPurple,
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            CartItem(),
-            SizedBox(height: 16.0),
-            CartItem(),
-            Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Total : Price Total',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.0,
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Add your checkout button action here
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.deepPurple,
-                    padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  child: Text(
-                    'Checkout',
-                    style: TextStyle(fontSize: 18.0),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+      body: FutureBuilder(
+        future: Hive.openBox<Cart>('cartBox'), // Open the box
+        builder: (BuildContext context, AsyncSnapshot<Box<Cart>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            var box = snapshot.data;
+
+            if (box == null || box.isEmpty) {
+              return Center(child: Text('No items in cart'));
+            }
+
+            return ListView.builder(
+              itemCount: box.length,
+              itemBuilder: (context, index) {
+                final cartItem = box.getAt(index);
+                return ListTile(
+                  title: Text(cartItem!.name),
+                  subtitle: Text('Price: \$${cartItem.price.toStringAsFixed(2)}'),
+                );
+              },
+            );
+          }
+        },
       ),
     );
   }
