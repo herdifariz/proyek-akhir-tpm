@@ -38,12 +38,12 @@ class _WishlistPageState extends State<WishlistPage> {
           itemCount: 3,
           itemBuilder: (context, index) {
             return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProductPage()),
-                );
-              },
+              // onTap: () {
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(builder: (context) => ProductPage()),
+              //   );
+              // },
               child: WishlistItem(),
             );
           },

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import '../../models/product_model.dart';
 import 'component/product_action.dart';
 import 'component/product_app_bar.dart';
-import 'component/product_image.dart';
 import 'component/product_info.dart';
 
 class ProductPage extends StatelessWidget {
+  final Products productData;
+
+  const ProductPage({required this.productData});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,9 +19,9 @@ class ProductPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ProductImage(),
-            SizedBox(height: 16.0),
-            ProductInfo(),
+            // ProductImage(imageUrl: productData.image,),
+            // SizedBox(height: 16.0),
+            ProductInfo(productData: productData,),
             Spacer(),
             ProductActions(),
           ],

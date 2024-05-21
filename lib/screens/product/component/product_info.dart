@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import '../../../models/product_model.dart';
 import 'product_favorite.dart';
 
 class ProductInfo extends StatefulWidget {
+  final Products productData;
+  const ProductInfo({required this.productData});
+
   @override
   _ProductInfoState createState() => _ProductInfoState();
 }
@@ -20,10 +24,19 @@ class _ProductInfoState extends State<ProductInfo> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        SingleChildScrollView(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16.0), // Rounded corners
+            child: Container(
+              color: Colors.grey[300],
+              child: Center(child: Image.network(widget.productData.image!)),
+            ),
+          ),
+        ),
         Row(
           children: [
             Text(
-              'Product Price',
+              widget.productData.price.toString(),
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
