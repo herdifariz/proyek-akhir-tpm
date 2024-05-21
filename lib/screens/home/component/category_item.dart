@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import '../../product/product_page.dart';
+import '../product_by_category.dart';
 
 class CategoryItem extends StatelessWidget {
   final IconData icon;
   final String label;
+  final String categoryName;
 
-  CategoryItem({required this.icon, required this.label});
+  CategoryItem({required this.icon, required this.label, required this.categoryName});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class CategoryItem extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ProductPage()),
+          MaterialPageRoute(builder: (context) => ProductByCategoryPage(categoryName: categoryName,)),
         );;
       },
       child: Padding(

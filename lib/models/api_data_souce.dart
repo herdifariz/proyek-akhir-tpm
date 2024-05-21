@@ -9,4 +9,7 @@ class ApiDataSource {
   Future<Map<String, dynamic>> loadProducts() {
     return BaseNetwork.get("products");
   }
+  Future<Map<String, dynamic>> loadProductsByCategory(String category) {
+    return BaseNetwork.get("products/category?type=$category");
+  }
 }

@@ -96,26 +96,32 @@ class _HomeCategoryDataState extends State<HomeCategoryData> {
             CategoryItem(
               icon: Icons.tv_outlined,
               label: categoryData.categories![0].toUpperCase(),
+              categoryName: categoryData.categories![0],
             ),
             CategoryItem(
               icon: Icons.speaker_group_outlined,
               label: categoryData.categories![1].toUpperCase(),
+              categoryName: categoryData.categories![1],
             ),
             CategoryItem(
               icon: Icons.laptop_mac_outlined,
               label: categoryData.categories![2].toUpperCase(),
+              categoryName: categoryData.categories![2],
             ),
             CategoryItem(
               icon: Icons.phone_android_outlined,
               label: categoryData.categories![3].toUpperCase(),
+              categoryName: categoryData.categories![3],
             ),
             CategoryItem(
               icon: Icons.videogame_asset,
               label: categoryData.categories![4].toUpperCase(),
+              categoryName: categoryData.categories![4],
             ),
             CategoryItem(
               icon: Icons.table_restaurant_rounded,
               label: categoryData.categories![5].toUpperCase(),
+              categoryName: categoryData.categories![5],
             ),
           ],
         ),
