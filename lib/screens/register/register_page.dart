@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../controllers/register_controller.dart';
 import 'component/custom_text_field.dart';
 import 'component/city_dropdown.dart';
 import 'component/register_button.dart';
@@ -12,6 +13,10 @@ class _RegisterPageState extends State<RegisterPage> {
   String selectedCity = 'Jogja'; // Nilai default
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  final RegisterController registerController = RegisterController();
 
   void _showErrorDialog() {
     showDialog(
@@ -70,7 +75,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 child: Column(
                   children: <Widget>[
-                    CustomTextField(label: 'Name'),
+                    CustomTextField(
+                      label: 'Name',
+                      controller: nameController,
+                    ),
                     SizedBox(height: 16),
                     CityDropdown(
                       selectedCity: selectedCity,
@@ -81,7 +89,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       },
                     ),
                     SizedBox(height: 16),
-                    CustomTextField(label: 'Address'),
+                    CustomTextField(
+                      label: 'Address',
+                      controller: addressController,
+                    ),
                     SizedBox(height: 16),
                     CustomTextField(
                       label: 'Phone',
@@ -95,17 +106,42 @@ class _RegisterPageState extends State<RegisterPage> {
                       keyboardType: TextInputType.emailAddress,
                     ),
                     SizedBox(height: 16),
-                    CustomTextField(label: 'Password', obscureText: true),
+                    CustomTextField(
+                        label: 'Password',
+                        controller: passwordController,
+                        obscureText: true),
                   ],
                 ),
               ),
               SizedBox(height: 20),
-              RegisterButton(
-                validate: () {
-                  return _validateEmail(emailController.text) &&
-                      _validatePhone(phoneController.text);
+              ElevatedButton(
+                onPressed: () {
+                  if (_validateEmail(emailController.text) &&
+                      _validatePhone(phoneController.text)) {
+                    registerController.register(
+                        context,
+                        nameController.text,
+                        selectedCity,
+                        addressController.text,
+                        phoneController.text,
+                        emailController.text,
+                        passwordController.text);
+                  } else {
+                    _showErrorDialog();
+                  }
                 },
-                onInvalid: _showErrorDialog,
+                child: Text(
+                  'Register',
+                  style: TextStyle(color: Color(0xFF6200EE)),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  minimumSize: Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: BorderSide(color: Color(0xFF6200EE)),
+                  ),
+                ),
               ),
               Spacer(),
             ],

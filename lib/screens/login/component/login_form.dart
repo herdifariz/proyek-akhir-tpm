@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import '../../../controllers/login_controller.dart';
 import '../../home/home_page.dart';
 
 class LoginForm extends StatelessWidget {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  final LoginController loginController = LoginController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -13,6 +18,7 @@ class LoginForm extends StatelessWidget {
       child: Column(
         children: <Widget>[
           TextField(
+            controller: emailController,
             decoration: InputDecoration(
               labelText: 'Email',
               labelStyle: TextStyle(color: Color(0xFF6200EE)),
@@ -32,6 +38,7 @@ class LoginForm extends StatelessWidget {
           ),
           SizedBox(height: 16),
           TextField(
+            controller: passwordController,
             decoration: InputDecoration(
               labelText: 'Password',
               labelStyle: TextStyle(color: Color(0xFF6200EE)),
@@ -53,10 +60,8 @@ class LoginForm extends StatelessWidget {
           SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-              );
+              loginController.login(
+                  context, emailController.text, passwordController.text);
             },
             child: Text(
               'LOGIN',

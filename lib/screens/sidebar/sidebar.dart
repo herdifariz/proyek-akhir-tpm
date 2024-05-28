@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:proyek/screens/login/login_page.dart';
 import 'package:proyek/screens/settings/setting.dart';
 import 'package:proyek/screens/wishlist/wishlist_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'component/sidebar_app_bar.dart';
 import 'component/user_info.dart';
 import 'component/sidebar_item.dart';
@@ -53,8 +55,13 @@ class Sidebar extends StatelessWidget {
           SidebarItem(
             icon: Icons.logout_rounded,
             text: 'Logout',
-            onTap: () {
-              // Handle the tap
+            onTap: () async {
+              late SharedPreferences logindata;
+              logindata = await SharedPreferences.getInstance();
+              logindata.setBool('login', true);
+
+              Navigator.pushReplacement(
+                  context, new MaterialPageRoute(builder: (context) => LoginPage()));
             },
           ),
         ],
