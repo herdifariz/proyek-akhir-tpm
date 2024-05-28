@@ -53,18 +53,11 @@ class _ProductActionsState extends State<ProductActions> {
   }
 
   Future<void> addToCart(Products productData) async {
-    final box = await Hive.openBox<Cart>('cartBox'); // Open the 'cartBox'
-
-    // Convert the product price to the selected currency
-    double convertedPrice = _convertCurrency(productData.price!.toDouble());
-
-    // Create a Cart object from the product data with the converted price
+    final box = await Hive.openBox<Cart>('cartBox');
     final cartItem = Cart(productData.title!, productData.price! as double);
 
-    // Add the cart item to the box
     await box.add(cartItem);
 
-    // Print the contents of the box to the console
     print('Current cart contents:');
     box.values.forEach((item) {
       print('Name: ${item.name}, Price: ${item.price}');

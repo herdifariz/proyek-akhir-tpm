@@ -1,6 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:proyek/models/wishlist.dart';
 
 class WishlistItem extends StatelessWidget {
+  final Wishlist wishlistItem;
+  final VoidCallback onRemove; // Add a callback for removing the item
+
+  const WishlistItem({
+    Key? key,
+    required this.wishlistItem,
+    required this.onRemove, // Initialize the callback
+  }) : super(key: key);
+
+  Future<void> _removeFromWishlist(BuildContext context, Wishlist item) async {
+    final box = await Hive.openBox<Wishlist>('wishListBox');
+    await box.delete(item.key);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Item removed from wishlist')),
+    );
+    onRemove(); // Call the callback to update the state
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -14,7 +34,7 @@ class WishlistItem extends StatelessWidget {
               height: 150,
               alignment: Alignment.centerLeft,
               child: Image.network(
-                'https://media.discordapp.net/attachments/480720671274696739/1241811686558535774/gracia1.jpg?ex=664d8901&is=664c3781&hm=5ea384e44f17d5a6983ecfa5daf85882b360a22e9bf8a0092010fc72a08a4211&=&format=webp&width=936&height=936',
+                wishlistItem.image,
                 fit: BoxFit.cover,
               ),
             ),
@@ -24,19 +44,23 @@ class WishlistItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Product Name',
+                    wishlistItem.name,
                   ),
                   SizedBox(height: 8.0),
                   Text(
-                    'Product Price',
+                    '\$${wishlistItem.price.toStringAsFixed(2)}',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: 8.0),
-                  IconButton(
-                    icon: Icon(Icons.favorite, color: Colors.deepPurple),
-                    onPressed: () {},
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.favorite, color: Colors.deepPurple),
+                        onPressed: () => _removeFromWishlist(context, wishlistItem),
+                      ),
+                    ],
                   ),
                 ],
               ),

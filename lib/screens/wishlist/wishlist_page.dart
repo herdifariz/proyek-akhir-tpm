@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../product/product_page.dart';
 import '../sidebar/sidebar.dart';
 import 'component/wishlist_item.dart';
+import 'package:hive/hive.dart';
+import 'package:proyek/models/wishlist.dart';
+import 'package:proyek/models/product_model.dart'; // Impor model produk
 
 class WishlistPage extends StatefulWidget {
   @override
@@ -10,6 +13,27 @@ class WishlistPage extends StatefulWidget {
 
 class _WishlistPageState extends State<WishlistPage> {
   int _selectedIndex = 1;
+
+  List<Wishlist> wishlistItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadWishlistItems();
+  }
+
+  Future<void> _loadWishlistItems() async {
+    final box = await Hive.openBox<Wishlist>('wishListBox');
+    setState(() {
+      wishlistItems = box.values.toList();
+    });
+  }
+
+  void _removeItemFromList(Wishlist item) {
+    setState(() {
+      wishlistItems.remove(item);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +59,22 @@ class _WishlistPageState extends State<WishlistPage> {
       body: Container(
         color: Colors.deepPurple,
         child: ListView.builder(
-          itemCount: 3,
+          itemCount: wishlistItems.length,
           itemBuilder: (context, index) {
             return GestureDetector(
-              // onTap: () {
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute(builder: (context) => ProductPage()),
-              //   );
-              // },
-              child: WishlistItem(),
+              onTap: () {
+                // Navigasi ke halaman detail produk
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => ProductPage(productData: wishlistItems),
+                //   ),
+                // );
+              },
+              child: WishlistItem(
+                wishlistItem: wishlistItems[index],
+                onRemove: () => _removeItemFromList(wishlistItems[index]), // Pass the callback
+              ),
             );
           },
         ),
@@ -57,7 +87,7 @@ class _WishlistPageState extends State<WishlistPage> {
           });
           if (index == 0) {
             Navigator.pushNamed(context, '/home');
-          }else if(index == 2){
+          } else if (index == 2) {
             Navigator.pushNamed(context, '/profile');
           }
         },

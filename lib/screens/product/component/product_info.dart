@@ -86,6 +86,10 @@ class _ProductInfoState extends State<ProductInfo> {
             ProductFavorite(
               isFavorited: _isFavorited,
               onPressed: _toggleFavorite,
+              title: widget.productData.title!,
+              price: widget.productData.price as double,
+              imageUrl: widget.productData.image!,
+              productData: widget.productData,
             ),
           ],
         ),

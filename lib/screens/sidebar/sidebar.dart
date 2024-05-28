@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyek/screens/settings/setting.dart';
-import 'package:proyek/screens/wishlist/wishlist.dart';
+import 'package:proyek/screens/wishlist/wishlist_page.dart';
 import 'component/sidebar_app_bar.dart';
 import 'component/user_info.dart';
 import 'component/sidebar_item.dart';
