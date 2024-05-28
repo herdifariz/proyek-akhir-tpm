@@ -21,6 +21,35 @@ class HomeCategoryData extends StatefulWidget {
 
 class _HomeCategoryDataState extends State<HomeCategoryData> {
   bool showAll = false;
+  List<Products> allProducts = [];
+  List<Products> filteredProducts = [];
+  TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    searchController.addListener(_filterProducts);
+  }
+
+  // @override
+  // void dispose() {
+  //   searchController.removeListener(_filterProducts);
+  //   searchController.dispose();
+  //   super.dispose();
+  // }
+
+  void _filterProducts() {
+    final query = searchController.text.toLowerCase();
+    setState(() {
+      if (query.isEmpty) {
+        filteredProducts = allProducts;
+      } else {
+        filteredProducts = allProducts.where((product) {
+          return product.title?.toLowerCase().contains(query) ?? false;
+        }).toList();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +80,10 @@ class _HomeCategoryDataState extends State<HomeCategoryData> {
         }
         if (snapshot.hasData) {
           Product productsData = Product.fromJson(snapshot.data);
+          allProducts = productsData.products ?? [];
+          if (filteredProducts.isEmpty) {
+            filteredProducts = allProducts;
+          }
           return SingleChildScrollView(
             child: _buildSuccessSection(categoryData, productsData),
           );
@@ -73,7 +106,6 @@ class _HomeCategoryDataState extends State<HomeCategoryData> {
   Widget _buildSuccessSection(Category categoryData, Product productsData) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      // Menyusun children dari Column ke kiri
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -126,12 +158,37 @@ class _HomeCategoryDataState extends State<HomeCategoryData> {
           ],
         ),
         Padding(
+          padding: EdgeInsets.all(16),
+          child: TextField(
+            controller: searchController,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              prefixIcon: Icon(Icons.search, color: Colors.deepPurple),
+              hintText: 'Search',
+              hintStyle: TextStyle(color: Colors.deepPurple),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepPurple),
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFF6200EE)),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFF6200EE)),
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+        ),
+        Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'All Products',
+                'Products',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -141,7 +198,7 @@ class _HomeCategoryDataState extends State<HomeCategoryData> {
               TextButton(
                 onPressed: () {
                   setState(() {
-                    showAll = !showAll; // Mengubah status showAll
+                    showAll = !showAll;
                   });
                 },
                 child: Text(
@@ -150,33 +207,38 @@ class _HomeCategoryDataState extends State<HomeCategoryData> {
                 ),
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.deepPurpleAccent,
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 8.0),
+                  padding:
+                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 ),
               ),
             ],
           ),
         ),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Jumlah kolom
-            crossAxisSpacing: 8.0, // Jarak horizontal antar kolom
-            mainAxisSpacing: 8.0, // Jarak vertikal antar baris
-            childAspectRatio: 0.75, // Rasio aspek untuk menyesuaikan tinggi dan lebar item grid
-          ),
-          itemCount: showAll ? productsData.products!.length : 4,
-          // Mengatur jumlah produk berdasarkan status showAll
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ProductItem(productData: productsData.products![index]),
-            );
-          },
-        ),
+        _productItemBuilder(filteredProducts),
         SizedBox(height: 20),
       ],
     );
+  }
+
+  Widget _productItemBuilder(List<Products> data) {
+    return Builder(builder: (context) {
+      return GridView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 8.0,
+          mainAxisSpacing: 8.0,
+          childAspectRatio: 0.75,
+        ),
+        itemCount: showAll ? data.length : (data.length < 4 ? data.length : 4),
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ProductItem(productData: data[index]),
+          );
+        },
+      );
+    });
   }
 }

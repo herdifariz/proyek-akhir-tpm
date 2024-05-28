@@ -38,25 +38,26 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           borderRadius: BorderRadius.circular(5),
         ),
         child: Center(
-          child: TextField(
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search, color: Colors.deepPurple),
-              hintText: 'Search',
-              hintStyle: TextStyle(color: Colors.deepPurple),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.deepPurple),
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Color(0xFF6200EE)),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Color(0xFF6200EE)),
-                borderRadius: BorderRadius.circular(30),
-              ),
-            ),
-          ),
+          child: Text("Shop"),
+          // child: TextField(
+          //   decoration: InputDecoration(
+          //     prefixIcon: Icon(Icons.search, color: Colors.deepPurple),
+          //     hintText: 'Search',
+          //     hintStyle: TextStyle(color: Colors.deepPurple),
+          //     border: OutlineInputBorder(
+          //       borderSide: BorderSide(color: Colors.deepPurple),
+          //       borderRadius: BorderRadius.circular(30.0),
+          //     ),
+          //     focusedBorder: OutlineInputBorder(
+          //       borderSide: BorderSide(color: Color(0xFF6200EE)),
+          //       borderRadius: BorderRadius.circular(30),
+          //     ),
+          //     enabledBorder: OutlineInputBorder(
+          //       borderSide: BorderSide(color: Color(0xFF6200EE)),
+          //       borderRadius: BorderRadius.circular(30),
+          //     ),
+          //   ),
+          // ),
         ),
       ),
       actions: [
@@ -69,8 +70,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                 builder: (context) => CartPage(), // Melewatkan selectedTimeZone ke CartPage
               ),
             );
-
-
           },
         ),
       ],
