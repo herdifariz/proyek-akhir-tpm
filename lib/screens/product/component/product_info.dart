@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../models/product_model.dart';
 import 'product_favorite.dart';
 
@@ -12,6 +13,20 @@ class ProductInfo extends StatefulWidget {
 
 class _ProductInfoState extends State<ProductInfo> {
   bool _isFavorited = false;
+  String _selectedCurrency = 'USD';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPreferences(); // Load preferences when the widget is initialized
+  }
+
+  Future<void> _loadPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _selectedCurrency = prefs.getString('selectedCurrency') ?? 'USD';
+    });
+  }
 
   void _toggleFavorite() {
     setState(() {
@@ -19,8 +34,32 @@ class _ProductInfoState extends State<ProductInfo> {
     });
   }
 
+  double _convertCurrency(double hargaitem) {
+    switch (_selectedCurrency) {
+      case 'Rupiah':
+        return hargaitem * 16000;
+      case 'EUR':
+        return hargaitem * 0.92;
+      default:
+        return hargaitem;
+    }
+  }
+
+  String _formatPrice(double price) {
+    switch (_selectedCurrency) {
+      case 'Rupiah':
+        return 'Rp ${price.toStringAsFixed(0)}';
+      case 'EUR':
+        return '€${price.toStringAsFixed(2)}';
+      default:
+        return '\$${price.toStringAsFixed(2)}';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    double convertedPrice = _convertCurrency(widget.productData.price as double);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -36,7 +75,7 @@ class _ProductInfoState extends State<ProductInfo> {
         Row(
           children: [
             Text(
-              widget.productData.price.toString(),
+              _formatPrice(convertedPrice),
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,

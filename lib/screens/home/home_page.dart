@@ -26,7 +26,7 @@ class _HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomeAppBar(),
+      appBar: HomeAppBar(isProductByCategory:false, ),
       body: HomeCategoryData(
         selectedIndex: _selectedIndex,
         onItemTapped: _onItemTapped,

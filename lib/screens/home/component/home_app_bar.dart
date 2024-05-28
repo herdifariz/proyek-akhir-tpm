@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:proyek/screens/cart/cart_page.dart';
-import 'package:proyek/screens/order/order_track.dart';
 import '../../sidebar/sidebar.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final bool isProductByCategory;
+
+  HomeAppBar({this.isProductByCategory = false,});
+
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 
@@ -11,7 +14,14 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
-      leading: IconButton(
+      leading: isProductByCategory
+          ? IconButton(
+        icon: Icon(Icons.arrow_back, color: Colors.deepPurple),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      )
+          : IconButton(
         icon: Icon(Icons.menu, color: Colors.deepPurple),
         onPressed: () {
           Navigator.push(
@@ -55,11 +65,16 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => CartPage()),
+              MaterialPageRoute(
+                builder: (context) => CartPage(), // Melewatkan selectedTimeZone ke CartPage
+              ),
             );
+
+
           },
         ),
       ],
     );
   }
 }
+

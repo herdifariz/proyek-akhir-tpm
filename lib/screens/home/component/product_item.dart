@@ -1,14 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../models/product_model.dart';
 import '../../product/product_page.dart';
 
-
-class ProductItem extends StatelessWidget {
+class ProductItem extends StatefulWidget {
   final Products productData;
   const ProductItem({super.key, required this.productData});
 
   @override
+  _ProductItemState createState() => _ProductItemState();
+}
+
+class _ProductItemState extends State<ProductItem> {
+  String _selectedCurrency = 'USD';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPreferences(); // Load preferences when the widget is initialized
+  }
+
+  Future<void> _loadPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _selectedCurrency = prefs.getString('selectedCurrency') ?? 'USD';
+    });
+  }
+
+  double _convertCurrency(double harga) {
+    switch (_selectedCurrency) {
+      case 'Rupiah':
+        return harga * 16000;
+      case 'EUR':
+        return harga * 0.92;
+      default:
+        return harga;
+    }
+  }
+
+  String _formatPrice(double harga) {
+    switch (_selectedCurrency) {
+      case 'Rupiah':
+        return 'Rp ${harga.toStringAsFixed(0)}';
+      case 'EUR':
+        return '€${harga.toStringAsFixed(2)}';
+      default:
+        return '\$${harga.toStringAsFixed(2)}';
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    double convertedPrice = _convertCurrency(widget.productData.price! as double);
+
     return Container(
       width: 150,
       height: 305, // Menentukan tinggi tetap untuk Container
@@ -29,7 +73,7 @@ class ProductItem extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ProductPage(productData: productData,)),
+            MaterialPageRoute(builder: (context) => ProductPage(productData: widget.productData)),
           );
         },
         child: Column(
@@ -41,7 +85,7 @@ class ProductItem extends StatelessWidget {
                 topRight: Radius.circular(16.0),
               ),
               child: Image.network(
-                productData.image!,
+                widget.productData.image!,
                 width: 150,
                 height: 200, // Fixed height for the image
                 fit: BoxFit.cover,
@@ -54,11 +98,13 @@ class ProductItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    productData.title!.length > 50 ? productData.title!.substring(0,50)+"...":productData.title!,
+                    widget.productData.title!.length > 50
+                        ? widget.productData.title!.substring(0, 50) + "..."
+                        : widget.productData.title!,
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    productData.price!.toString(), // Example price
+                    _formatPrice(convertedPrice), // Display converted price
                     style: TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                 ],

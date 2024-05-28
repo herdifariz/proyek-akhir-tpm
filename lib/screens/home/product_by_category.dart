@@ -32,7 +32,7 @@ class _ProductByCategoryPageState extends State<ProductByCategoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomeAppBar(),
+      appBar: HomeAppBar(isProductByCategory:true, ),
       body: ProductCategoryData(categoryName: widget.categoryName,),
       bottomNavigationBar: HomeBottomNav(
         selectedIndex: _selectedIndex,

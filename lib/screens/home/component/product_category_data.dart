@@ -52,7 +52,7 @@ class ProductCategoryData extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Products',
+                  'Products on\t${categoryName.toUpperCase()}',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
