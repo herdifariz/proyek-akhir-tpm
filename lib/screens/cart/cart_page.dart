@@ -142,7 +142,7 @@ class _CartPageState extends State<CartPage> {
                   ),
                 ),
               );
-              _clearCart();
+             // _clearCart();
             },
             child: Text('Ya'),
           ),
@@ -216,11 +216,5 @@ class _CartPageState extends State<CartPage> {
     return _formatPrice(total);
   }
 
-  void _clearCart() {
-    if (user != null) {
-      user!.carts.clear();
-      // You might want to save the updated user object back to Hive here
-      setState(() {}); // Trigger a rebuild to reflect the cleared cart
-    }
-  }
+
 }

@@ -69,23 +69,6 @@ class _ProductActionsState extends State<ProductActions> {
         print('Item added to cart:');
         print('Name: ${cartItem.name}, Price: ${cartItem.price}');
 
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Success"),
-              content: Text("Successfully added to cart!"),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("OK"),
-                ),
-              ],
-            );
-          },
-        );
       }
     }
   }

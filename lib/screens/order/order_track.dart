@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:proyek/screens/home/home_page.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../models/user.dart';
 
 class OrderTrackingPage extends StatefulWidget {
   final List<DateTime> flaggedTime;
@@ -14,6 +18,7 @@ class OrderTrackingPage extends StatefulWidget {
 
 class _OrderTrackingPageState extends State<OrderTrackingPage> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  User? user;
 
   @override
   void initState() {
@@ -103,6 +108,7 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> with SingleTicker
                   ),
                 ),
                 onPressed: () {
+                  _clearCart();
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => HomePage()),
@@ -130,6 +136,27 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> with SingleTicker
       formattedTime += dateFormat.format(time) + '\n';
     }
     return formattedTime.trim(); // Trim any leading or trailing whitespace
+  }
+
+  Future<void> _clearCart() async {
+    var userBox = await Hive.openBox<User>('userBox');
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? accIndex = prefs.getInt("accIndex");
+
+    if (accIndex != null) {
+      User? currentUser = userBox.get(accIndex);
+      if (currentUser != null) {
+        setState(() {
+          user = currentUser;
+        });
+      }
+    }
+    if (user != null) {
+      user!.carts.clear();
+      // You might want to save the updated user object back to Hive here
+      setState(() {}); // Trigger a rebuild to reflect the cleared cart
+    }
   }
 
   @override
