@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyek/screens/profile/component/profile_data.dart';
+import 'component/profile_app_bar.dart';
 import 'component/profile_bottom_nav.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -19,9 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Profile'),
-      ),
+      appBar: ProfileAppBar(title: 'Profile',),
       body: ProfileData(),
       bottomNavigationBar: ProfileBottomNav(
         selectedIndex: _selectedIndex,

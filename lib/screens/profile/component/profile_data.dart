@@ -1,13 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import '../../../models/user.dart';
 import 'profile_avatar.dart';
 import 'profile_detail.dart';
 import 'profile_password_field.dart';
 import 'profile_edit_button.dart';
 
-class ProfileData extends StatelessWidget {
+class ProfileData extends StatefulWidget {
+  @override
+  _ProfileDataState createState() => _ProfileDataState();
+}
+
+class _ProfileDataState extends State<ProfileData> {
+  late Box<User> userBox;
+  User? currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    // Open the Hive box and fetch the current user data
+    openUserBox();
+  }
+
+  Future<void> openUserBox() async {
+    userBox = await Hive.openBox<User>('userBox');
+    setState(() {
+      // Assuming the first user is the logged-in user for this example
+      currentUser = userBox.getAt(0);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return currentUser == null
+        ? Center(child: CircularProgressIndicator())
+        : Container(
       color: Colors.deepPurple,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -24,14 +51,14 @@ class ProfileData extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ProfileDetail(title: 'Name', value: 'User Name'),
-                  ProfileDetail(title: 'Email', value: 'Email User'),
-                  ProfileDetail(title: 'City', value: 'User’s City'),
-                  ProfileDetail(title: 'Address', value: 'User’s Address'),
-                  ProfileDetail(title: 'Phone', value: 'User’s Phonenumber'),
-                  ProfilePasswordField(),
+                  ProfileDetail(title: 'Name', value: currentUser!.name),
+                  ProfileDetail(title: 'Email', value: currentUser!.email),
+                  ProfileDetail(title: 'City', value: currentUser!.city),
+                  ProfileDetail(title: 'Address', value: currentUser!.address),
+                  ProfileDetail(title: 'Phone', value: currentUser!.phone),
+                  ProfilePasswordField(password: currentUser!.password),
                   SizedBox(height: 20),
-                  ProfileEditButton(),
+                  ProfileEditButton(userEmail: currentUser!.email),
                 ],
               ),
             ),

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ProfilePasswordField extends StatefulWidget {
+  final String password;
+
+  ProfilePasswordField({required this.password});
+
   @override
   _ProfilePasswordFieldState createState() => _ProfilePasswordFieldState();
 }
@@ -18,7 +22,7 @@ class _ProfilePasswordFieldState extends State<ProfilePasswordField> {
         ),
         Expanded(
           child: Text(
-            _isPasswordVisible ? 'UserPassword123' : '********',
+            _isPasswordVisible ? widget.password : '*' * widget.password.length,
             style: TextStyle(color: Colors.deepPurple),
           ),
         ),

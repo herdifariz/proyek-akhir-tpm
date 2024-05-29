@@ -1,29 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:proyek/screens/sidebar/sidebar.dart';
 
 class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+
+  ProfileAppBar({required this.title});
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
-      elevation: 0,
-      leading: IconButton(
-        icon: Icon(Icons.menu, color: Colors.deepPurple),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Sidebar()),
-          );
-        },
-      ),
-      title: Text(
-        'Profile',
-        style: TextStyle(color: Colors.deepPurple),
-      ),
+      title: Text('Profile'),
+      centerTitle: true,
       actions: [
         IconButton(
-          icon: Icon(Icons.shopping_cart, color: Colors.deepPurple),
-          onPressed: () {},
+          icon: Icon(Icons.delete),
+          onPressed: () {
+            // Add your onPressed code here!
+          },
         ),
       ],
     );

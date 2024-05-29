@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:proyek/screens/profile/edit_profile_page.dart';
 
 class ProfileEditButton extends StatelessWidget {
+  final String userEmail;
+
+  ProfileEditButton({required this.userEmail});
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EditProfilePage(),
+          ),
+        );
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
         side: BorderSide(color: Colors.deepPurple, width: 2),
