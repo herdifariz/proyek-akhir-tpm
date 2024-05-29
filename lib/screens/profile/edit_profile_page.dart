@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../controllers/profile_controller.dart';
+import '../../models/user.dart';
 import '../register/component/city_dropdown.dart';
 import '../register/component/custom_text_field.dart';
 
@@ -15,6 +18,30 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   final ProfileController profileController = ProfileController();
+  late Box<User> userBox;
+  late SharedPreferences logindata;
+  User? currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    openUserBox();
+  }
+
+  Future<void> openUserBox() async {
+    var logindata = await SharedPreferences.getInstance();
+    String? email = logindata.getString('email');
+    userBox = await Hive.openBox<User>('userBox');
+    setState(() {
+      currentUser = userBox.values.firstWhere((user)=> user.email == email);
+    });
+
+    emailController.text = currentUser!.email;
+    nameController.text = currentUser!.name;
+    selectedCity = currentUser!.city;
+    addressController.text = currentUser!.address;
+    phoneController.text = currentUser!.phone;
+  }
 
   void _showErrorDialog(String message) {
     showDialog(
@@ -51,6 +78,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Color(0xFF6200EE),
+      ),
       backgroundColor: Color(0xFF6200EE),
       body: Center(
         child: Padding(
