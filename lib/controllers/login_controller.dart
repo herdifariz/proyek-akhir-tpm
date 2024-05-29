@@ -21,6 +21,8 @@ class LoginController {
       print('Login successful!');
       logindata = await SharedPreferences.getInstance();
       logindata.setBool('login', false);
+      logindata.setString('email', email);
+      // print(logindata.getString('email'));
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),

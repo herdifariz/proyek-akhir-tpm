@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../models/user.dart';
 import 'profile_avatar.dart';
 import 'profile_detail.dart';
@@ -13,6 +14,7 @@ class ProfileData extends StatefulWidget {
 
 class _ProfileDataState extends State<ProfileData> {
   late Box<User> userBox;
+  late SharedPreferences logindata;
   User? currentUser;
 
   @override
@@ -23,10 +25,11 @@ class _ProfileDataState extends State<ProfileData> {
   }
 
   Future<void> openUserBox() async {
+    logindata = await SharedPreferences.getInstance();
+    String? email = logindata.getString('email');
     userBox = await Hive.openBox<User>('userBox');
     setState(() {
-      // Assuming the first user is the logged-in user for this example
-      currentUser = userBox.getAt(0);
+      currentUser = userBox.values.firstWhere((user)=> user.email == email);
     });
   }
 
