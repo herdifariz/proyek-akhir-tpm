@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:proyek/models/wishlist.dart';
 
+import '../../../models/user.dart';
+
 class WishlistItem extends StatelessWidget {
   final Wishlist wishlistItem;
   final VoidCallback onRemove; // Add a callback for removing the item
@@ -13,8 +15,8 @@ class WishlistItem extends StatelessWidget {
   }) : super(key: key);
 
   Future<void> _removeFromWishlist(BuildContext context, Wishlist item) async {
-    final box = await Hive.openBox<Wishlist>('wishListBox');
-    await box.delete(item.key);
+    final userBox = await Hive.openBox<User>('userBox');
+    await userBox.delete(item.key);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Item removed from wishlist')),
     );

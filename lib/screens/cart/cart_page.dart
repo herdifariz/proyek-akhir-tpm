@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:proyek/screens/order/order_track.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../models/cart.dart';
+import '../../models/user.dart';
+import '../order/order_track.dart';
 
 class CartPage extends StatefulWidget {
   @override
@@ -15,18 +17,38 @@ class _CartPageState extends State<CartPage> {
   String _selectedTimeZone = 'UTC+0:00 London';
   String _selectedCurrency = 'Rupiah';
 
+  User? user;
+
   @override
   void initState() {
     super.initState();
     _loadPreferences(); // Load preferences when the page is initialized
+    loadCart(); // Load the user's cart when the page is initialized
   }
 
   Future<void> _loadPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     setState(() {
       _selectedTimeZone = prefs.getString('selectedTimeZone') ?? 'UTC+0:00 London';
       _selectedCurrency = prefs.getString('selectedCurrency') ?? 'Rupiah';
     });
+  }
+
+  void loadCart() async {
+    var userBox = await Hive.openBox<User>('userBox');
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? accIndex = prefs.getInt("accIndex");
+
+    if (accIndex != null) {
+      User? currentUser = userBox.get(accIndex);
+      if (currentUser != null) {
+        setState(() {
+          user = currentUser;
+        });
+      }
+    }
   }
 
   @override
@@ -45,73 +67,56 @@ class _CartPageState extends State<CartPage> {
           style: TextStyle(color: Colors.deepPurple),
         ),
       ),
-      body: FutureBuilder(
-        future: Hive.openBox<Cart>('cartBox'), // Open the box
-        builder: (BuildContext context, AsyncSnapshot<Box<Cart>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
-            var box = snapshot.data;
-
-            if (box == null || box.isEmpty) {
-              return Center(child: Text('No items in cart'));
-            }
-
-            double total = 0;
-            for (int i = 0; i < box.length; i++) {
-              total += _convertCurrency(box.getAt(i)!.price);
-            }
-
-
-            return Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: box.length,
-                    itemBuilder: (context, index) {
-                      final cartItem = box.getAt(index);
-                      return ListTile(
-                        title: Text(cartItem!.name),
-                        subtitle: Text(
-                          'Price: ${_formatPrice(_convertCurrency(cartItem.price))}',
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Total: ${_formatPrice(total)}',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          await _checkout(context, box, total); // Call checkout function and wait for the dialog to close
-                        },
-                        child: Text('Checkout'),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            );
-          }
-        },
-      ),
+      body: user != null ? _buildCartList() : Center(child: CircularProgressIndicator()), // Show cart list if user is loaded, else show loading indicator
     );
   }
 
-  Future<void> _checkout(BuildContext context, Box<Cart> box, double total) async {
+  Widget _buildCartList() {
+    return Column(
+      children: [
+        Expanded(
+          child: user!.carts.isNotEmpty
+              ? ListView.builder(
+            itemCount: user!.carts.length,
+            itemBuilder: (context, index) {
+              final cartItem = user!.carts[index];
+              return ListTile(
+                title: Text(cartItem.name),
+                subtitle: Text(
+                  'Price: ${_formatPrice(_convertCurrency(cartItem.price))}',
+                ),
+              );
+            },
+          )
+              : Center(child: Text('No items in cart')),
+        ),
+        SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Total: ${_calculateTotalPrice()}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  await _checkout(context); // Call checkout function and wait for the dialog to close
+                },
+                child: Text('Checkout'),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _checkout(BuildContext context) async {
     // Convert current time to selected time zone before adding to flaggedTimes
     DateTime flaggedTime = DateTime.now().toUtc().add(_getDuration(_selectedTimeZone));
     _flaggedTimes.add(flaggedTime);
@@ -124,7 +129,7 @@ class _CartPageState extends State<CartPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Anda Yakin Akan Membeli?'),
-        content: Text('Total amount: ${_formatPrice(total)}'),
+        content: Text('Total amount: ${_calculateTotalPrice()}'),
         actions: [
           ElevatedButton(
             onPressed: () {
@@ -133,11 +138,11 @@ class _CartPageState extends State<CartPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => OrderTrackingPage(
-                    flaggedTime: _flaggedTimes,totalHarga: _formatPrice(total) // Pass the flagged time here
+                    flaggedTime: _flaggedTimes, totalHarga: _calculateTotalPrice(), // Pass the flagged time here
                   ),
                 ),
               );
-              box.clear();
+              _clearCart();
             },
             child: Text('Ya'),
           ),
@@ -198,6 +203,24 @@ class _CartPageState extends State<CartPage> {
         return '€${price.toStringAsFixed(2)}';
       default:
         return '\$${price.toStringAsFixed(2)}';
+    }
+  }
+
+  String _calculateTotalPrice() {
+    double total = 0;
+    if (user != null) {
+      for (int i = 0; i < user!.carts.length; i++) {
+        total += _convertCurrency(user!.carts[i].price);
+      }
+    }
+    return _formatPrice(total);
+  }
+
+  void _clearCart() {
+    if (user != null) {
+      user!.carts.clear();
+      // You might want to save the updated user object back to Hive here
+      setState(() {}); // Trigger a rebuild to reflect the cleared cart
     }
   }
 }

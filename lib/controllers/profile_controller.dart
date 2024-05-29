@@ -18,7 +18,7 @@ class ProfileController {
       // Fetch the user by email
       final user = userBox.values.firstWhere(
             (user) => user.email == email,
-        orElse: () => User('', '', '', '', '', ''),
+        orElse: () => User('', '', '', '', '', '',[],[]),
       );
 
       if (user.email.isNotEmpty) {

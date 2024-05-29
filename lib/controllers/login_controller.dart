@@ -7,20 +7,29 @@ import '../screens/home/home_page.dart';
 class LoginController {
   late SharedPreferences logindata;
 
-  void login (BuildContext context, String email, String password) async {
+  void login(BuildContext context, String email, String password) async {
     final usersBox = await Hive.openBox<User>('userBox');
 
-    // Find the user with the provided email
-    final user = usersBox.values.firstWhere(
-          (user) => user.email == email,
-      orElse: () => null!,
-    );
+    logindata = await SharedPreferences.getInstance();
+    // Inisialisasi variabel untuk menampung user yang ditemukan dan indeksnya
+    User? foundUser;
+    int userIndex = 0; // Inisialisasi default ke 0
 
-    // Check if the user exists and the password matches
-    if (user != null && user.password == password) {
-      print('Login successful!');
-      logindata = await SharedPreferences.getInstance();
-      logindata.setBool('login', false);
+    // Iterasi melalui box untuk menemukan user dengan email yang diberikan
+    for (int i = 0; i < usersBox.length; i++) {
+      final user = usersBox.getAt(i);
+      if (user != null && user.email == email) {
+        foundUser = user;
+        logindata.setInt("accIndex", i);
+        break;
+      }
+    }
+
+    // Periksa apakah user ada dan password cocok
+    if (foundUser != null && foundUser.password == password) {
+      print('Login berhasil!');
+      //logindata = await SharedPreferences.getInstance();
+      logindata.setBool('login', true);  // Mengasumsikan true berarti sudah login
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
@@ -30,8 +39,8 @@ class LoginController {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Login Failed'),
-            content: Text('Please check your input and try again.'),
+            title: Text('Login Gagal'),
+            content: Text('Silakan periksa input Anda dan coba lagi.'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
@@ -43,7 +52,7 @@ class LoginController {
           );
         },
       );
-      print('Invalid email or password. Login failed.');
+      print('Email atau password salah. Login gagal.');
     }
   }
 }

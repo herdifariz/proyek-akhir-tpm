@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../models/cart.dart';
 import '../../../models/product_model.dart';
+import '../../../models/user.dart';
 
 class ProductActions extends StatefulWidget {
   final Products productData;
@@ -53,15 +54,40 @@ class _ProductActionsState extends State<ProductActions> {
   }
 
   Future<void> addToCart(Products productData) async {
-    final box = await Hive.openBox<Cart>('cartBox');
-    final cartItem = Cart(productData.title!, productData.price! as double);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? accIndex = prefs.getInt("accIndex");
 
-    await box.add(cartItem);
+    if (accIndex != null) {
+      final userBox = await Hive.openBox<User>('userBox');
+      final User? currentUser = userBox.get(accIndex);
 
-    print('Current cart contents:');
-    box.values.forEach((item) {
-      print('Name: ${item.name}, Price: ${item.price}');
-    });
+      if (currentUser != null) {
+        final Cart cartItem = Cart(productData.title!, productData.price! as double);
+        currentUser.carts.add(cartItem);
+        userBox.put(accIndex, currentUser);
+
+        print('Item added to cart:');
+        print('Name: ${cartItem.name}, Price: ${cartItem.price}');
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Success"),
+              content: Text("Successfully added to cart!"),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    }
   }
 
   @override

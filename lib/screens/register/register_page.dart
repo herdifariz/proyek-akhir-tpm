@@ -125,7 +125,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         addressController.text,
                         phoneController.text,
                         emailController.text,
-                        passwordController.text);
+                        passwordController.text,
+                        [],
+                        []);
                   } else {
                     _showErrorDialog();
                   }

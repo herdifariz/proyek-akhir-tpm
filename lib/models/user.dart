@@ -1,4 +1,6 @@
 import 'package:hive/hive.dart';
+import 'package:proyek/models/wishlist.dart';
+import 'cart.dart';
 
 part 'user.g.dart'; // Generated file
 
@@ -22,12 +24,20 @@ class User extends HiveObject {
   @HiveField(5)
   late String password;
 
+  @HiveField(6)
+  List<Cart> carts;
+
+  @HiveField(7)
+  List<Wishlist> wishlists;
+
   User(
       this.name,
       this.city,
       this.address,
       this.phone,
       this.email,
-      this.password
+      this.password,
+      this.carts,
+      this.wishlists
       );
 }

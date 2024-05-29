@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../models/user.dart';
+import 'component/wishlist_item.dart';
+import '../../models/wishlist.dart';
+import '../../models/product_model.dart';
 import '../product/product_page.dart';
 import '../sidebar/sidebar.dart';
-import 'component/wishlist_item.dart';
-import 'package:hive/hive.dart';
-import 'package:proyek/models/wishlist.dart';
-import 'package:proyek/models/product_model.dart'; // Impor model produk
 
 class WishlistPage extends StatefulWidget {
   @override
@@ -13,7 +15,6 @@ class WishlistPage extends StatefulWidget {
 
 class _WishlistPageState extends State<WishlistPage> {
   int _selectedIndex = 1;
-
   List<Wishlist> wishlistItems = [];
 
   @override
@@ -23,10 +24,19 @@ class _WishlistPageState extends State<WishlistPage> {
   }
 
   Future<void> _loadWishlistItems() async {
-    final box = await Hive.openBox<Wishlist>('wishListBox');
-    setState(() {
-      wishlistItems = box.values.toList();
-    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? accIndex = prefs.getInt("accIndex");
+
+    if (accIndex != null) {
+      final userBox = await Hive.openBox<User>('userBox');
+      final User? currentUser = userBox.get(accIndex);
+
+      if (currentUser != null) {
+        setState(() {
+          wishlistItems = currentUser.wishlists;
+        });
+      }
+    }
   }
 
   void _removeItemFromList(Wishlist item) {
@@ -62,18 +72,17 @@ class _WishlistPageState extends State<WishlistPage> {
           itemCount: wishlistItems.length,
           itemBuilder: (context, index) {
             return GestureDetector(
-              onTap: () {
-                // Navigasi ke halaman detail produk
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => ProductPage(productData: wishlistItems),
-                //   ),
-                // );
-              },
+              // onTap: () {
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => ProductPage(productData: wishlistItems[index]), // Pass wishlist item to ProductPage
+              //     ),
+              //   );
+              // },
               child: WishlistItem(
                 wishlistItem: wishlistItems[index],
-                onRemove: () => _removeItemFromList(wishlistItems[index]), // Pass the callback
+                onRemove: () => _removeItemFromList(wishlistItems[index]),
               ),
             );
           },

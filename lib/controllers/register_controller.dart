@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:proyek/models/cart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user.dart';
+import '../models/wishlist.dart';
 import '../screens/login/login_page.dart';
 
 class RegisterController {
+  late SharedPreferences registerData;
   void register(BuildContext context, String name, String city, String address,
-      String phone, String email, String password) async {
+      String phone, String email, String password, List<Cart> carts, List<Wishlist> wishlists) async {
     final usersBox = await Hive.openBox<User>('userBox');
+    registerData = await SharedPreferences.getInstance();
 
     // Check if email already exists
     final userExists = usersBox.values.any((user) => user.email == email);
@@ -39,9 +44,16 @@ class RegisterController {
       phone,
       email,
       password,
+      carts,
+      wishlists
     );
 
     await usersBox.add(newUser);
+
+    // registerData = await SharedPreferences.getInstance();
+    int userCount = usersBox.length;
+    await registerData.setInt("accIndex", userCount-1);
+    await registerData.setBool("logedIn", true);
 
     print('Register successful!');
     for (var user in usersBox.values) {
