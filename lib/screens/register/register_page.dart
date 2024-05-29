@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyek/screens/login/login_page.dart';
 import '../../controllers/register_controller.dart';
 import 'component/custom_text_field.dart';
 import 'component/city_dropdown.dart';
@@ -145,6 +146,16 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
               ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                  );
+                },
+                child: Text('Back to Login'),
+              ),
+
               Spacer(),
             ],
           ),
