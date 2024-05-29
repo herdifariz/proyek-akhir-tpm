@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,10 +25,12 @@ class _UserInfoState extends State<UserInfo> {
 
   Future<void> openUserBox() async {
     logindata = await SharedPreferences.getInstance();
-    String? email = logindata.getString('email');
+    // String? email = logindata.getString('email');
+    int? accIndex = logindata.getInt("accIndex");
     userBox = await Hive.openBox<User>('userBox');
     setState(() {
-      currentUser = userBox.values.firstWhere((user)=> user.email == email);
+      // currentUser = userBox.values.firstWhere((user)=> user.email == email);
+      currentUser = userBox.getAt(accIndex!);
     });
   }
 
