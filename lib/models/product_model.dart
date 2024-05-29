@@ -25,7 +25,7 @@ class Products {
   final int? id;
   final String? title;
   final String? image;
-  final int? price;
+  final double? price;
   final String? description;
   final String? brand;
   final String? model;
@@ -50,7 +50,7 @@ class Products {
       : id = json['id'] as int?,
         title = json['title'] as String?,
         image = json['image'] as String?,
-        price = json['price'] as int?,
+        price = (json['price'] as int?)!.toDouble(),
         description = json['description'] as String?,
         brand = json['brand'] as String?,
         model = json['model'] as String?,
