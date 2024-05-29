@@ -26,10 +26,12 @@ class _ProfileDataState extends State<ProfileData> {
 
   Future<void> openUserBox() async {
     logindata = await SharedPreferences.getInstance();
-    String? email = logindata.getString('email');
+    // String? email = logindata.getString('email');
+    int? accIndex = logindata.getInt("accIndex");
     userBox = await Hive.openBox<User>('userBox');
     setState(() {
-      currentUser = userBox.values.firstWhere((user)=> user.email == email);
+      // currentUser = userBox.values.firstWhere((user)=> user.email == email);
+      currentUser = userBox.getAt(accIndex!);
     });
   }
 

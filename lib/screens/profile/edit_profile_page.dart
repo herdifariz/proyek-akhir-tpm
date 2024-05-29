@@ -29,11 +29,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Future<void> openUserBox() async {
-    var logindata = await SharedPreferences.getInstance();
-    String? email = logindata.getString('email');
+    logindata = await SharedPreferences.getInstance();
+    // String? email = logindata.getString('email');
+    int? accIndex = logindata.getInt("accIndex");
     userBox = await Hive.openBox<User>('userBox');
     setState(() {
-      currentUser = userBox.values.firstWhere((user)=> user.email == email);
+      // currentUser = userBox.values.firstWhere((user)=> user.email == email);
+      currentUser = userBox.getAt(accIndex!);
     });
 
     emailController.text = currentUser!.email;
