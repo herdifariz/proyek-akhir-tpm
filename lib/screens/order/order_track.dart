@@ -3,7 +3,9 @@ import 'package:hive/hive.dart';
 import 'package:proyek/screens/home/home_page.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import '../../main.dart';
 import '../../models/user.dart';
 
 class OrderTrackingPage extends StatefulWidget {
@@ -24,12 +26,15 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> with SingleTicker
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      vsync: this, // Gunakan this sebagai TickerProvider
+      vsync: this,
       duration: Duration(seconds: 3),
     );
 
     // Start the animation to update the progress value from 0.0 to 1.0
     _animationController.forward();
+
+    // Send notification
+    _showNotification();
   }
 
   @override
@@ -44,7 +49,7 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> with SingleTicker
             children: <Widget>[
               // Logo
               Icon(
-                Icons.terrain, // Replace this with your logo widget if available
+                Icons.terrain,
                 size: 100,
                 color: Colors.white,
               ),
@@ -157,6 +162,27 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> with SingleTicker
       // You might want to save the updated user object back to Hive here
       setState(() {}); // Trigger a rebuild to reflect the cleared cart
     }
+  }
+
+  Future<void> _showNotification() async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails(
+      'your_channel_id',
+      'your_channel_name',
+      channelDescription: 'your_channel_description',
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+    );
+    const NotificationDetails platformChannelSpecifics =
+    NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      'Order Update',
+      'Please wait, our courier will call you when it arrives',
+      platformChannelSpecifics,
+      payload: 'item x',
+    );
   }
 
   @override
