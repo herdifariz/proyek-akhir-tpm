@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import 'package:proyek/controllers/profile_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../models/user.dart';
 
 class ProfileAvatar extends StatefulWidget {
   @override
@@ -9,15 +15,36 @@ class ProfileAvatar extends StatefulWidget {
 
 class _ProfileAvatarState extends State<ProfileAvatar> {
   File? _image;
+  ProfileController profileController = ProfileController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAvatar();
+  }
+
+  Future<void> _loadAvatar() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? accIndex = prefs.getInt("accIndex");
+
+    if (accIndex != null) {
+      final userBox = await Hive.openBox<User>('userBox');
+      final User? currentUser = userBox.get(accIndex);
+      setState(() {
+        _image = File(currentUser!.avatar!);
+      });
+    }
+  }
 
   Future<void> _pickImage() async {
     try {
       final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
 
       if (pickedFile != null) {
-        setState(() {
-          _image = File(pickedFile.path);
-        });
+        profileController.updateAvatar(pickedFile.path, context);
+        // setState(() {
+        //   _image = File(pickedFile.path);
+        // });
       } else {
         print("No image selected.");
       }

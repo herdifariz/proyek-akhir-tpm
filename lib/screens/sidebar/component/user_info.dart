@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -41,7 +42,8 @@ class _UserInfoState extends State<UserInfo> {
         CircleAvatar(
           radius: 60.0, // Memperbesar ukuran lingkaran
           backgroundColor: Colors.white,
-          child: Text("Foto", style: TextStyle(fontSize: 24.0)),
+          // child: Text("Foto", style: TextStyle(fontSize: 24.0)),
+          child: Image.file(File(currentUser!.avatar!)),
         ),
         SizedBox(width: 20.0), // Jarak antara foto dan teks
         Column(

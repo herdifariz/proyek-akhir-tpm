@@ -30,6 +30,9 @@ class User extends HiveObject {
   @HiveField(7)
   List<Wishlist> wishlists;
 
+  @HiveField(8)
+  late String? avatar;
+
   User(
       this.name,
       this.city,
@@ -38,6 +41,6 @@ class User extends HiveObject {
       this.email,
       this.password,
       this.carts,
-      this.wishlists
+      this.wishlists,
       );
 }
