@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyek/screens/addon/saran.dart';
 import 'package:proyek/screens/login/login_page.dart';
 import 'package:proyek/screens/settings/setting.dart';
 import 'package:proyek/screens/wishlist/wishlist_page.dart';
@@ -47,9 +48,12 @@ class Sidebar extends StatelessWidget {
           ),
           SidebarItem(
             icon: Icons.person_2,
-            text: 'Member',
-            onTap: () {
-              // Handle the tap
+            text: 'Pesan Kesan',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PesanPage()),
+                );
             },
           ),
           SidebarItem(

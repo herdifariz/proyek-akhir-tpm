@@ -218,24 +218,24 @@ class _CartPageState extends State<CartPage> {
           actions: [
           ElevatedButton(
           onPressed: () {
-    Navigator.pop(context);
-    Navigator.push(
-    context,
-    MaterialPageRoute(
-    builder: (context) => OrderTrackingPage(
-    flaggedTime: _flaggedTimes, totalHarga: _calculateTotalPrice(), // Pass the flagged time here
-    ),
-    ),
-    );
-    // _clearCart();
-    },
-      child: Text('Ya'),
-    ),
-    TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Tidak'),
+              Navigator.pop(context);
+              Navigator.push(
+              context,
+              MaterialPageRoute(
+                      builder: (context) => OrderTrackingPage(
+                          flaggedTime: _flaggedTimes, totalHarga: _calculateTotalPrice(), // Pass the flagged time here
+                        ),
+                      ),
+                      );
+                      // _clearCart();
+                      },
+            child: Text('Ya'),
+            ),
+            TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('Tidak'),
             ),
           ],
       ),
