@@ -110,32 +110,25 @@ class _CartPageState extends State<CartPage> {
                             ),
                           ),
                           SizedBox(height: 8),
-                          Text(
-                            'Price: ${_formatPrice(_convertCurrency(cartItem.price))}',
-                            style: TextStyle(
-                              color: Colors.deepPurple, // Set the text color to purple
-                              fontSize: 14,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Price: ${_formatPrice(_convertCurrency(cartItem.price))}',
+                                style: TextStyle(
+                                  color: Colors.deepPurple, // Set the text color to purple
+                                  fontSize: 14,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  _showDeleteConfirmationDialog(context, index);
+                                },
+                                child: Icon(Icons.delete, color: Colors.red, size: 16),
+                              ),
+                            ],
                           ),
                         ],
-                      ),
-                      Positioned(
-                        right: 3,
-                        top: 87,
-                        child: Container(
-                          width: 30, // Circle diameter
-                          height: 30, // Circle diameter
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              _showDeleteConfirmationDialog(context, index);
-                            },
-                            child: Icon(Icons.delete, color: Colors.white, size: 16),
-                          ),
-                        ),
                       ),
                     ],
                   ),
@@ -175,6 +168,7 @@ class _CartPageState extends State<CartPage> {
       ),
     );
   }
+
 
   void _showDeleteConfirmationDialog(BuildContext context, int index) {
     showDialog(
