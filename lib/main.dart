@@ -18,7 +18,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
 
-  // Register adapters before opening boxes
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(CartAdapter());
   Hive.registerAdapter(WishlistAdapter());
@@ -27,7 +26,6 @@ void main() async {
   await Hive.openBox<Cart>('cartBox');
   await Hive.openBox<Wishlist>('wishListBox');
 
-  // Initialize the notifications plugin
   initializeNotifications();
 
   runApp(MyApp());

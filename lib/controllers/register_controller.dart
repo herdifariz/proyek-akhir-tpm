@@ -9,7 +9,7 @@ import '../screens/login/login_page.dart';
 class RegisterController {
   late SharedPreferences registerData;
   void register(BuildContext context, String name, String city, String address,
-      String phone, String email, String password, List<Cart> carts, List<Wishlist> wishlists) async {
+      String phone, String email, String password, List<Cart> carts, List<Wishlist> wishlists, String? avatar) async {
     final usersBox = await Hive.openBox<User>('userBox');
     registerData = await SharedPreferences.getInstance();
 
@@ -45,7 +45,8 @@ class RegisterController {
       email,
       password,
       carts,
-      wishlists
+      wishlists,
+      avatar
     );
 
     await usersBox.add(newUser);

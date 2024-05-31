@@ -42,5 +42,6 @@ class User extends HiveObject {
       this.password,
       this.carts,
       this.wishlists,
+      this.avatar
       );
 }

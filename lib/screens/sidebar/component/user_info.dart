@@ -20,17 +20,14 @@ class _UserInfoState extends State<UserInfo> {
   @override
   void initState() {
     super.initState();
-    // Open the Hive box and fetch the current user data
     openUserBox();
   }
 
   Future<void> openUserBox() async {
     logindata = await SharedPreferences.getInstance();
-    // String? email = logindata.getString('email');
     int? accIndex = logindata.getInt("accIndex");
     userBox = await Hive.openBox<User>('userBox');
     setState(() {
-      // currentUser = userBox.values.firstWhere((user)=> user.email == email);
       currentUser = userBox.getAt(accIndex!);
     });
   }
@@ -40,21 +37,20 @@ class _UserInfoState extends State<UserInfo> {
     return Row(
       children: [
         CircleAvatar(
-          radius: 60.0, // Memperbesar ukuran lingkaran
+          radius: 60.0,
           backgroundColor: Colors.white,
-          // child: Text("Foto", style: TextStyle(fontSize: 24.0)),
           child: Image.file(File(currentUser!.avatar!)),
         ),
-        SizedBox(width: 20.0), // Jarak antara foto dan teks
+        SizedBox(width: 20.0),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(currentUser!.name, style: TextStyle(color: Colors.white, fontSize: 20.0)), // Ganti dengan nama pengguna
+            Text(currentUser!.name, style: TextStyle(color: Colors.white, fontSize: 20.0)),
             SizedBox(height: 8.0),
-            Text(currentUser!.phone, style: TextStyle(color: Colors.white)), // Ganti dengan nomor telepon
+            Text(currentUser!.phone, style: TextStyle(color: Colors.white)),
             SizedBox(height: 4.0),
-            Text(currentUser!.email, style: TextStyle(color: Colors.white)), // Ganti dengan alamat email
+            Text(currentUser!.email, style: TextStyle(color: Colors.white)),
           ],
         ),
       ],

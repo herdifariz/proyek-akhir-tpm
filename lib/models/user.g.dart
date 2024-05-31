@@ -25,7 +25,8 @@ class UserAdapter extends TypeAdapter<User> {
       fields[5] as String,
       (fields[6] as List).cast<Cart>(),
       (fields[7] as List).cast<Wishlist>(),
-    )..avatar = fields[8] as String?;
+      fields[8] as String?,
+    );
   }
 
   @override

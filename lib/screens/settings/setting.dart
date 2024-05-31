@@ -15,9 +15,7 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   String? _selectedCurrency = 'Rupiah';
   String? _selectedTimeZone = 'UTC+7:00 Jogja';
-  List<DateTime> _flaggedTimes = [];
 
-  // Function to load selected timezone and currency from SharedPreferences
   Future<void> _loadPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -29,7 +27,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   void initState() {
     super.initState();
-    _loadPreferences(); // Load selected timezone and currency when the page is initialized
+    _loadPreferences();
   }
 
   Future<void> _savePreferences() async {
@@ -90,22 +88,5 @@ class _SettingPageState extends State<SettingPage> {
       ),
       backgroundColor: Colors.deepPurple,
     );
-  }
-
-  Duration _getDuration(String timeZone) {
-    switch (timeZone) {
-      case 'UTC+7:00 Jogja':
-        return Duration(hours: 7);
-      case 'UTC+9:00 Jayapura':
-        return Duration(hours: 9);
-      case 'UTC+0:00 London':
-        return Duration(hours: 0);
-      case 'UTC+8:00 Bali':
-        return Duration(hours: 8);
-      case 'UTC-5:00 New York':
-        return Duration(hours: -5);
-      default:
-        return Duration(hours: 0); // Default to UTC
-    }
   }
 }

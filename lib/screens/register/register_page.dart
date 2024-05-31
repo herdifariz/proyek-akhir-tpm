@@ -56,108 +56,120 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       backgroundColor: Color(0xFF6200EE),
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Spacer(),
-              Icon(
-                Icons.ac_unit,
-                size: 100,
-                color: Colors.white,
-              ),
-              SizedBox(height: 20),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                decoration: BoxDecoration(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 20,),
+                Icon(
+                  Icons.ac_unit,
+                  size: 100,
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: Column(
-                  children: <Widget>[
-                    CustomTextField(
-                      label: 'Name',
-                      controller: nameController,
-                    ),
-                    SizedBox(height: 16),
-                    CityDropdown(
-                      selectedCity: selectedCity,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          selectedCity = newValue!;
-                        });
-                      },
-                    ),
-                    SizedBox(height: 16),
-                    CustomTextField(
-                      label: 'Address',
-                      controller: addressController,
-                    ),
-                    SizedBox(height: 16),
-                    CustomTextField(
-                      label: 'Phone',
-                      controller: phoneController,
-                      keyboardType: TextInputType.phone,
-                    ),
-                    SizedBox(height: 16),
-                    CustomTextField(
-                      label: 'Email',
-                      controller: emailController,
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                    SizedBox(height: 16),
-                    CustomTextField(
-                        label: 'Password',
-                        controller: passwordController,
-                        obscureText: true),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_validateEmail(emailController.text) &&
-                      _validatePhone(phoneController.text)) {
-                    registerController.register(
-                        context,
-                        nameController.text,
-                        selectedCity,
-                        addressController.text,
-                        phoneController.text,
-                        emailController.text,
-                        passwordController.text,
-                        [],
-                        []);
-                  } else {
-                    _showErrorDialog();
-                  }
-                },
-                child: Text(
-                  'Register',
-                  style: TextStyle(color: Color(0xFF6200EE)),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  minimumSize: Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    side: BorderSide(color: Color(0xFF6200EE)),
+                SizedBox(height: 20),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      CustomTextField(
+                        label: 'Name',
+                        controller: nameController,
+                      ),
+                      SizedBox(height: 16),
+                      CityDropdown(
+                        selectedCity: selectedCity,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedCity = newValue!;
+                          });
+                        },
+                      ),
+                      SizedBox(height: 16),
+                      CustomTextField(
+                        label: 'Address',
+                        controller: addressController,
+                      ),
+                      SizedBox(height: 16),
+                      CustomTextField(
+                        label: 'Phone',
+                        controller: phoneController,
+                        keyboardType: TextInputType.phone,
+                      ),
+                      SizedBox(height: 16),
+                      CustomTextField(
+                        label: 'Email',
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                      SizedBox(height: 16),
+                      CustomTextField(
+                          label: 'Password',
+                          controller: passwordController,
+                          obscureText: true),
+                    ],
                   ),
                 ),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                  );
-                },
-                child: Text('Back to Login'),
-              ),
-
-              Spacer(),
-            ],
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_validateEmail(emailController.text) &&
+                        _validatePhone(phoneController.text)) {
+                      registerController.register(
+                          context,
+                          nameController.text,
+                          selectedCity,
+                          addressController.text,
+                          phoneController.text,
+                          emailController.text,
+                          passwordController.text,
+                          [],
+                          [],
+                      '');
+                    } else {
+                      _showErrorDialog();
+                    }
+                  },
+                  child: Text(
+                    'Register',
+                    style: TextStyle(color: Color(0xFF6200EE)),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    minimumSize: Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(color: Color(0xFF6200EE)),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10,),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
+                  },
+                  child: Text('Back to Login', style: TextStyle(color: Color(0xFF6200EE)),),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    minimumSize: Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(color: Color(0xFF6200EE)),
+                    ),
+                  ),
+                ),
+            
+                SizedBox(height: 20,),
+              ],
+            ),
           ),
         ),
       ),

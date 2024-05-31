@@ -87,7 +87,7 @@ class _ProductItemState extends State<ProductItem> {
               child: Image.network(
                 widget.productData.image!,
                 width: 150,
-                height: 200, // Fixed height for the image
+                height: 150, // Fixed height for the image
                 fit: BoxFit.cover,
               ),
             ),
@@ -98,8 +98,8 @@ class _ProductItemState extends State<ProductItem> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    widget.productData.title!.length > 50
-                        ? widget.productData.title!.substring(0, 50) + "..."
+                    widget.productData.title!.length > 20
+                        ? widget.productData.title!.substring(0, 20) + "..."
                         : widget.productData.title!,
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),

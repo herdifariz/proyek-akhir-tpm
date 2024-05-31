@@ -16,23 +16,38 @@ class ProfileAvatar extends StatefulWidget {
 class _ProfileAvatarState extends State<ProfileAvatar> {
   File? _image;
   ProfileController profileController = ProfileController();
+  late SharedPreferences logindata;
+  User? currentUser;
+  late Box<User> userBox;
 
   @override
   void initState() {
     super.initState();
-    _loadAvatar();
+    openUserBox().then((_) => _loadAvatar());
+  }
+
+  Future<void> openUserBox() async {
+    logindata = await SharedPreferences.getInstance();
+    int? accIndex = logindata.getInt("accIndex");
+    print(accIndex);
+    userBox = await Hive.openBox<User>('userBox');
+    if (accIndex != null) {
+      setState(() {
+        currentUser = userBox.getAt(accIndex);
+      });
+    } else {
+      print('Account index is null');
+    }
   }
 
   Future<void> _loadAvatar() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    int? accIndex = prefs.getInt("accIndex");
-
-    if (accIndex != null) {
-      final userBox = await Hive.openBox<User>('userBox');
-      final User? currentUser = userBox.get(accIndex);
+    if (currentUser!.avatar != null) {
       setState(() {
         _image = File(currentUser!.avatar!);
+        print(_image);
       });
+    } else {
+      print('Avatar path is null or user is null');
     }
   }
 
@@ -42,9 +57,10 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
 
       if (pickedFile != null) {
         profileController.updateAvatar(pickedFile.path, context);
-        // setState(() {
-        //   _image = File(pickedFile.path);
-        // });
+        print(pickedFile.path);
+        setState(() {
+          _image = File(pickedFile.path);
+        });
       } else {
         print("No image selected.");
       }
