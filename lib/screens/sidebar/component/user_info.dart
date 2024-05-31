@@ -39,14 +39,18 @@ class _UserInfoState extends State<UserInfo> {
         CircleAvatar(
           radius: 60.0,
           backgroundColor: Colors.white,
-          child: Image.file(File(currentUser!.avatar!)),
+          // child: Image.file(File(currentUser!.avatar!)),
+          child: currentUser!.avatar == ''
+              ? Icon(Icons.person, size: 100,)
+              : Image.file(File(currentUser!.avatar!)),
         ),
         SizedBox(width: 20.0),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(currentUser!.name, style: TextStyle(color: Colors.white, fontSize: 20.0)),
+            Text(currentUser!.name,
+                style: TextStyle(color: Colors.white, fontSize: 20.0)),
             SizedBox(height: 8.0),
             Text(currentUser!.phone, style: TextStyle(color: Colors.white)),
             SizedBox(height: 4.0),

@@ -51,6 +51,14 @@ class _RegisterPageState extends State<RegisterPage> {
     return regex.hasMatch(phone);
   }
 
+  bool _validatePassword(String password) {
+    if (password.length >= 8) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +70,9 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 Icon(
                   Icons.ac_unit,
                   size: 100,
@@ -119,7 +129,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 ElevatedButton(
                   onPressed: () {
                     if (_validateEmail(emailController.text) &&
-                        _validatePhone(phoneController.text)) {
+                        _validatePhone(phoneController.text) &&
+                        _validatePassword(passwordController.text)) {
                       registerController.register(
                           context,
                           nameController.text,
@@ -130,7 +141,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           passwordController.text,
                           [],
                           [],
-                      '');
+                          '');
                     } else {
                       _showErrorDialog();
                     }
@@ -148,7 +159,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pushReplacement(
@@ -156,7 +169,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       MaterialPageRoute(builder: (context) => LoginPage()),
                     );
                   },
-                  child: Text('Back to Login', style: TextStyle(color: Color(0xFF6200EE)),),
+                  child: Text(
+                    'Back to Login',
+                    style: TextStyle(color: Color(0xFF6200EE)),
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     minimumSize: Size(double.infinity, 50),
@@ -166,8 +182,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                 ),
-            
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
               ],
             ),
           ),

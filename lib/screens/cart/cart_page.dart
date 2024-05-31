@@ -31,7 +31,8 @@ class _CartPageState extends State<CartPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     setState(() {
-      _selectedTimeZone = prefs.getString('selectedTimeZone') ?? 'UTC+0:00 London';
+      _selectedTimeZone =
+          prefs.getString('selectedTimeZone') ?? 'UTC+0:00 London';
       _selectedCurrency = prefs.getString('selectedCurrency') ?? 'Rupiah';
     });
   }
@@ -73,69 +74,84 @@ class _CartPageState extends State<CartPage> {
         color: Colors.deepPurple, // Ensure the background color is deep purple
         child: user != null
             ? _buildCartList()
-            : Center(child: CircularProgressIndicator()), // Show cart list if user is loaded, else show loading indicator
+            : Center(
+                child:
+                    CircularProgressIndicator()), // Show cart list if user is loaded, else show loading indicator
       ),
     );
   }
 
   Widget _buildCartList() {
     return Container(
-      color: Colors.deepPurple, // Set the background color of the whole list to deep purple
+      color: Colors
+          .deepPurple, // Set the background color of the whole list to deep purple
       child: Column(
         children: [
           Expanded(
             child: user!.carts.isNotEmpty
                 ? ListView.builder(
-              itemCount: user!.carts.length,
-              itemBuilder: (context, index) {
-                final cartItem = user!.carts[index];
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white, // Set the background color of the product container to white
-                    borderRadius: BorderRadius.circular(12), // Add rounded border
-                  ),
-                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16), // Add some margin for spacing
-                  padding: EdgeInsets.all(16), // Add padding inside the container
-                  child: Stack(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            cartItem.name,
-                            style: TextStyle(
-                              color: Colors.deepPurple, // Set the text color to purple
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Price: ${_formatPrice(_convertCurrency(cartItem.price))}',
-                                style: TextStyle(
-                                  color: Colors.deepPurple, // Set the text color to purple
-                                  fontSize: 14,
+                    itemCount: user!.carts.length,
+                    itemBuilder: (context, index) {
+                      final cartItem = user!.carts[index];
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors
+                              .white, // Set the background color of the product container to white
+                          borderRadius:
+                              BorderRadius.circular(12), // Add rounded border
+                        ),
+                        margin: EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 16), // Add some margin for spacing
+                        padding: EdgeInsets.all(
+                            16), // Add padding inside the container
+                        child: Stack(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  cartItem.name,
+                                  style: TextStyle(
+                                    color: Colors
+                                        .deepPurple, // Set the text color to purple
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  _showDeleteConfirmationDialog(context, index);
-                                },
-                                child: Icon(Icons.delete, color: Colors.red, size: 16),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              },
-            )
-                : Center(child: Text('No items in cart', style: TextStyle(color: Colors.white))),
+                                SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Price: ${_formatPrice(_convertCurrency(cartItem.price))}',
+                                      style: TextStyle(
+                                        color: Colors
+                                            .deepPurple, // Set the text color to purple
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        _showDeleteConfirmationDialog(
+                                            context, index);
+                                      },
+                                      child: Icon(Icons.delete,
+                                          color: Colors.red, size: 16),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  )
+                : Center(
+                    child: Text('No items in cart',
+                        style: TextStyle(color: Colors.white))),
           ),
           SizedBox(height: 16),
           Padding(
@@ -153,11 +169,14 @@ class _CartPageState extends State<CartPage> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    await _checkout(context); // Call checkout function and wait for the dialog to close
+                    await _checkout(
+                        context); // Call checkout function and wait for the dialog to close
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white, // Set the background color of the button to white
-                    foregroundColor: Colors.deepPurple, // Set the text color of the button to purple
+                    backgroundColor: Colors
+                        .white, // Set the background color of the button to white
+                    foregroundColor: Colors
+                        .deepPurple, // Set the text color of the button to purple
                   ),
                   child: Text('Checkout'),
                 ),
@@ -169,13 +188,13 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-
   void _showDeleteConfirmationDialog(BuildContext context, int index) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Delete from Cart?'),
-        content: Text('Are you sure you want to remove this item from your cart?'),
+        content:
+            Text('Are you sure you want to remove this item from your cart?'),
         actions: [
           ElevatedButton(
             onPressed: () {
@@ -203,7 +222,8 @@ class _CartPageState extends State<CartPage> {
 
   Future<void> _checkout(BuildContext context) async {
     // Convert current time to selected time zone before adding to flaggedTimes
-    DateTime flaggedTime = DateTime.now().toUtc().add(_getDuration(_selectedTimeZone));
+    DateTime flaggedTime =
+        DateTime.now().toUtc().add(_getDuration(_selectedTimeZone));
     _flaggedTimes.add(flaggedTime);
 
     // Call function to flag time according to selected timezone
@@ -213,31 +233,33 @@ class _CartPageState extends State<CartPage> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-          title: Text('Anda Yakin Akan Membeli?'),
-          content: Text('Total amount: ${_calculateTotalPrice()}'),
-          actions: [
+        title: Text('Anda Yakin Akan Membeli?'),
+        content: Text('Total amount: ${_calculateTotalPrice()}'),
+        actions: [
           ElevatedButton(
-          onPressed: () {
+            onPressed: () {
               Navigator.pop(context);
               Navigator.push(
-              context,
-              MaterialPageRoute(
-                      builder: (context) => OrderTrackingPage(
-                          flaggedTime: _flaggedTimes, totalHarga: _calculateTotalPrice(), // Pass the flagged time here
-                        ),
-                      ),
-                      );
-                      // _clearCart();
-                      },
+                context,
+                MaterialPageRoute(
+                  builder: (context) => OrderTrackingPage(
+                    flaggedTime: _flaggedTimes,
+                    totalHarga:
+                        _calculateTotalPrice(), // Pass the flagged time here
+                  ),
+                ),
+              );
+              // _clearCart();
+            },
             child: Text('Ya'),
-            ),
-            TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text('Tidak'),
-            ),
-          ],
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('Tidak'),
+          ),
+        ],
       ),
     );
   }
@@ -245,7 +267,8 @@ class _CartPageState extends State<CartPage> {
   void _flagTimeAccordingToTimeZone() {
     Random random = Random();
     _flaggedTimes.forEach((time) {
-      int randomMinutes = random.nextInt(26) + 5; // Generate a random number between 5 and 30
+      int randomMinutes =
+          random.nextInt(26) + 5; // Generate a random number between 5 and 30
       Duration randomDuration = Duration(minutes: randomMinutes);
       _flaggedTimes[_flaggedTimes.indexOf(time)] = time.add(randomDuration);
     });
@@ -312,7 +335,7 @@ class _CartPageState extends State<CartPage> {
       if (currentUser != null) {
         // Find the index of the item to remove in the user's cart
         int indexToRemove = currentUser.carts.indexWhere((cartItem) =>
-        cartItem.name == productData.title &&
+            cartItem.name == productData.title &&
             cartItem.price == productData.price!.toDouble());
 
         if (indexToRemove != -1) {
@@ -329,4 +352,3 @@ class _CartPageState extends State<CartPage> {
     }
   }
 }
-

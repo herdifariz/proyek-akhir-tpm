@@ -1,3 +1,4 @@
+import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,7 +14,6 @@ class LoginController {
     logindata = await SharedPreferences.getInstance();
     // Inisialisasi variabel untuk menampung user yang ditemukan dan indeksnya
     User? foundUser;
-    int userIndex = 0; // Inisialisasi default ke 0
 
     // Iterasi melalui box untuk menemukan user dengan email yang diberikan
     for (int i = 0; i < usersBox.length; i++) {
@@ -26,9 +26,8 @@ class LoginController {
     }
 
     // Periksa apakah user ada dan password cocok
-    if (foundUser != null && foundUser.password == password) {
+    if (foundUser != null && (BCrypt.checkpw(password, foundUser.password))) {
       print('Login berhasil!');
-      //logindata = await SharedPreferences.getInstance();
       logindata.setBool('login', true);  // Mengasumsikan true berarti sudah login
       Navigator.pushReplacement(
         context,

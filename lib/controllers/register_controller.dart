@@ -1,3 +1,4 @@
+import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:proyek/models/cart.dart';
@@ -37,13 +38,15 @@ class RegisterController {
       return;
     }
 
+    String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
     User newUser = User(
       name,
       city,
       address,
       phone,
       email,
-      password,
+      hashedPassword,
       carts,
       wishlists,
       avatar

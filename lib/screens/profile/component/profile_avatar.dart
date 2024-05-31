@@ -53,7 +53,8 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
 
   Future<void> _pickImage() async {
     try {
-      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
 
       if (pickedFile != null) {
         profileController.updateAvatar(pickedFile.path, context);
@@ -78,19 +79,19 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
         children: [
           Align(
             alignment: Alignment.center,
-            child: _image == null
-                ? Text(
-              'Foto',
-              style: TextStyle(color: Colors.deepPurple, fontSize: 20),
-            )
+            child: _image!.path == ''
+                ? Icon(
+                    Icons.person,
+                    size: 100,
+                  )
                 : ClipOval(
-              child: Image.file(
-                _image!,
-                fit: BoxFit.cover,
-                width: 180,
-                height: 180,
-              ),
-            ),
+                    child: Image.file(
+                      _image!,
+                      fit: BoxFit.cover,
+                      width: 180,
+                      height: 180,
+                    ),
+                  ),
           ),
           Align(
             alignment: Alignment.bottomRight,

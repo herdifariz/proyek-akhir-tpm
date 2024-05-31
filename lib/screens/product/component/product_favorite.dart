@@ -43,13 +43,16 @@ class _ProductFavoriteState extends State<ProductFavorite> {
 
   Future<void> _addToWishlist() async {
     int? accIndex = prefs.getInt("accIndex");
+    print(accIndex);
     if (accIndex != null) {
       final userBox = await Hive.openBox<User>('userBox');
-      final currentUser = userBox.get(accIndex);
+      final currentUser = userBox.getAt(accIndex);
+      print(currentUser!.email);
       if (currentUser != null) {
         final wishListItem = Wishlist(widget.title, widget.price, widget.imageUrl);
         currentUser.wishlists.add(wishListItem);
         userBox.put(accIndex, currentUser);
+        print(currentUser.wishlists);
         setState(() {
           isFavorited = true;
         });
@@ -61,7 +64,7 @@ class _ProductFavoriteState extends State<ProductFavorite> {
     int? accIndex = prefs.getInt("accIndex");
     if (accIndex != null) {
       final userBox = await Hive.openBox<User>('userBox');
-      final currentUser = userBox.get(accIndex);
+      final currentUser = userBox.getAt(accIndex);
       if (currentUser != null) {
         final items = currentUser.wishlists.where((item) => item.name == widget.title).toList();
         for (var item in items) {

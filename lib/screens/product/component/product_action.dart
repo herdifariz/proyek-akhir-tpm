@@ -59,7 +59,7 @@ class _ProductActionsState extends State<ProductActions> {
 
     if (accIndex != null) {
       final userBox = await Hive.openBox<User>('userBox');
-      final User? currentUser = userBox.get(accIndex);
+      final User? currentUser = userBox.getAt(accIndex);
 
       if (currentUser != null) {
         final Cart cartItem = Cart(productData.title!, productData.price! as double);
