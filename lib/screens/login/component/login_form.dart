@@ -17,6 +17,7 @@ class LoginForm extends StatelessWidget {
       ),
       child: Column(
         children: <Widget>[
+          SizedBox(height: 16),
           TextField(
             controller: emailController,
             decoration: InputDecoration(
@@ -75,6 +76,7 @@ class LoginForm extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(height: 16),
         ],
       ),
     );

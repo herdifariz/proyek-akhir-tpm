@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyek/screens/drawer/drawer.dart';
 import 'component/home_app_bar.dart';
 import 'component/home_bottom_nav.dart';
 import 'component/home_data.dart';
@@ -9,14 +10,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomeState extends State<HomePage> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
 
-    if (index == 1) {
+    if (index == 0) {
       Navigator.pushNamed(context, '/wishlist');
     } else if (index == 2) {
       Navigator.pushNamed(context, '/profile');
@@ -35,6 +36,7 @@ class _HomeState extends State<HomePage> {
         selectedIndex: _selectedIndex,
         onItemTapped: _onItemTapped,
       ),
+      drawer: DrawerPage()
     );
   }
 }

@@ -42,9 +42,9 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               Spacer(),
               LoginHeader(),
-              Spacer(),
+              SizedBox(height: 20,),
               LoginForm(),
-              Spacer(),
+              SizedBox(height: 20,),
               LoginFooter(),
               Spacer(),
             ],

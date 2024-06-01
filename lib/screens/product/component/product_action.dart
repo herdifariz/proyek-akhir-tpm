@@ -62,7 +62,7 @@ class _ProductActionsState extends State<ProductActions> {
       final User? currentUser = userBox.getAt(accIndex);
 
       if (currentUser != null) {
-        final Cart cartItem = Cart(productData.title!, productData.price! as double);
+        final Cart cartItem = Cart(productData.title!, productData.price! as double, productData.image!);
         currentUser.carts.add(cartItem);
         userBox.put(accIndex, currentUser);
 
@@ -75,7 +75,7 @@ class _ProductActionsState extends State<ProductActions> {
 
   @override
   Widget build(BuildContext context) {
-    double convertedPrice = _convertCurrency(widget.productData.price!.toDouble());
+    _convertCurrency(widget.productData.price!.toDouble());
 
     return SizedBox(
       height: 60.0, // Height of the button
@@ -85,8 +85,8 @@ class _ProductActionsState extends State<ProductActions> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text("Success"),
-                content: Text("Successfully added to cart!"),
+                title: Text("Sukses"),
+                content: Text("Item ditambahkan ke keranjang!"),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -105,7 +105,7 @@ class _ProductActionsState extends State<ProductActions> {
           foregroundColor: Colors.purple, // Text color of the button
           textStyle: TextStyle(fontSize: 18.0),
         ),
-        child: Text('Add to Cart'),
+        child: Icon(Icons.shopping_cart_checkout),
       ),
     );
   }

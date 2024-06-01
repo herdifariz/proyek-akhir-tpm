@@ -20,17 +20,14 @@ class _ProfileDataState extends State<ProfileData> {
   @override
   void initState() {
     super.initState();
-    // Open the Hive box and fetch the current user data
     openUserBox();
   }
 
   Future<void> openUserBox() async {
     logindata = await SharedPreferences.getInstance();
-    // String? email = logindata.getString('email');
     int? accIndex = logindata.getInt("accIndex");
     userBox = await Hive.openBox<User>('userBox');
     setState(() {
-      // currentUser = userBox.values.firstWhere((user)=> user.email == email);
       currentUser = userBox.getAt(accIndex!);
     });
   }
@@ -42,11 +39,12 @@ class _ProfileDataState extends State<ProfileData> {
         : Container(
       color: Colors.deepPurple,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(32.0),
         child: Column(
           children: [
+            Spacer(),
             ProfileAvatar(),
-            SizedBox(height: 20),
+            SizedBox(height: 40),
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -56,18 +54,19 @@ class _ProfileDataState extends State<ProfileData> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ProfileDetail(title: 'Name', value: currentUser!.name),
-                  ProfileDetail(title: 'Email', value: currentUser!.email),
-                  ProfileDetail(title: 'City', value: currentUser!.city),
-                  ProfileDetail(title: 'Address', value: currentUser!.address),
-                  ProfileDetail(title: 'Phone', value: currentUser!.phone),
-                  ProfilePasswordField(password: currentUser!.password),
+                  SizedBox(height: 20,),
+                  ProfileDetail(title: 'Name            ', value: currentUser!.name),
+                  ProfileDetail(title: 'Email             ', value: currentUser!.email),
+                  ProfileDetail(title: 'City                ', value: currentUser!.city),
+                  ProfileDetail(title: 'Address        ', value: currentUser!.address),
+                  ProfileDetail(title: 'Phone           ', value: currentUser!.phone),
                   SizedBox(height: 20),
                   ProfileEditButton(userEmail: currentUser!.email),
+                  SizedBox(height: 20,),
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            Spacer()
           ],
         ),
       ),

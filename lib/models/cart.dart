@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part 'cart.g.dart'; // Generated file
+part 'cart.g.dart';
 
 @HiveType(typeId: 0)
 class Cart extends HiveObject {
@@ -10,5 +10,8 @@ class Cart extends HiveObject {
   @HiveField(1)
   late double price;
 
-  Cart(this.name, this.price);
+  @HiveField(2)
+  late String? image;
+
+  Cart(this.name, this.price, this.image);
 }

@@ -94,57 +94,23 @@ class _CartPageState extends State<CartPage> {
                     itemBuilder: (context, index) {
                       final cartItem = user!.carts[index];
                       return Container(
-                        decoration: BoxDecoration(
-                          color: Colors
-                              .white, // Set the background color of the product container to white
-                          borderRadius:
-                              BorderRadius.circular(12), // Add rounded border
+                        margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                        child: ListTile(
+                          leading: Image.network(cartItem.image!),
+                          title: Text(cartItem.name),
+                          subtitle: Text(
+                              _formatPrice(_convertCurrency(cartItem.price))),
+                          trailing: GestureDetector(
+                            onTap: () {
+                              _showDeleteConfirmationDialog(context, index);
+                            },
+                            child:
+                                Icon(Icons.delete, color: Colors.red, size: 16),
+                          ),
                         ),
-                        margin: EdgeInsets.symmetric(
-                            vertical: 8,
-                            horizontal: 16), // Add some margin for spacing
-                        padding: EdgeInsets.all(
-                            16), // Add padding inside the container
-                        child: Stack(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  cartItem.name,
-                                  style: TextStyle(
-                                    color: Colors
-                                        .deepPurple, // Set the text color to purple
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Price: ${_formatPrice(_convertCurrency(cartItem.price))}',
-                                      style: TextStyle(
-                                        color: Colors
-                                            .deepPurple, // Set the text color to purple
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        _showDeleteConfirmationDialog(
-                                            context, index);
-                                      },
-                                      child: Icon(Icons.delete,
-                                          color: Colors.red, size: 16),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white
                         ),
                       );
                     },
@@ -160,7 +126,7 @@ class _CartPageState extends State<CartPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Total: ${_calculateTotalPrice()}',
+                  'Total Biaya:         ${_calculateTotalPrice()}',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -168,10 +134,10 @@ class _CartPageState extends State<CartPage> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () async {
+                  onPressed: user!.carts.isNotEmpty ? () async {
                     await _checkout(
                         context); // Call checkout function and wait for the dialog to close
-                  },
+                  } : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors
                         .white, // Set the background color of the button to white
@@ -221,15 +187,12 @@ class _CartPageState extends State<CartPage> {
   }
 
   Future<void> _checkout(BuildContext context) async {
-    // Convert current time to selected time zone before adding to flaggedTimes
     DateTime flaggedTime =
         DateTime.now().toUtc().add(_getDuration(_selectedTimeZone));
     _flaggedTimes.add(flaggedTime);
 
-    // Call function to flag time according to selected timezone
     _flagTimeAccordingToTimeZone();
 
-    // Show a dialog with the total amount and a close button
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(

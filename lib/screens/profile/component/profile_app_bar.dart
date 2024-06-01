@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../login/login_page.dart';
 
 class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -12,9 +15,14 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       actions: [
         IconButton(
-          icon: Icon(Icons.delete),
-          onPressed: () {
-            // Add your onPressed code here!
+          icon: Icon(Icons.logout),
+          onPressed: () async {
+            late SharedPreferences logindata;
+            logindata = await SharedPreferences.getInstance();
+            logindata.setBool('login', true);
+
+            Navigator.pushReplacement(
+                context, new MaterialPageRoute(builder: (context) => LoginPage()));
           },
         ),
       ],

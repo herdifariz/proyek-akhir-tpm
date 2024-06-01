@@ -8,27 +8,29 @@ class ProfileEditButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EditProfilePage(),
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => EditProfilePage(),
+            ),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          side: BorderSide(color: Colors.deepPurple, width: 2),
+          minimumSize: Size(200, 50),
+          padding: EdgeInsets.symmetric(vertical: 15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
-        );
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        side: BorderSide(color: Colors.deepPurple, width: 2),
-        minimumSize: Size(double.infinity, 50),
-        padding: EdgeInsets.symmetric(vertical: 15),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
         ),
-      ),
-      child: Text(
-        'Edit Profile',
-        style: TextStyle(color: Colors.deepPurple),
+        child: Text(
+          'Edit Profile',
+          style: TextStyle(color: Colors.deepPurple),
+        ),
       ),
     );
   }

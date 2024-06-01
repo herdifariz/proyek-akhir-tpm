@@ -101,11 +101,11 @@ class _ProductInfoState extends State<ProductInfo> {
             color: Colors.white,
           ),
         ),
-        SizedBox(height: 8.0),
+        SizedBox(height: 32.0),
         Text(
           widget.productData.description!,
           style: TextStyle(
-            fontSize: 16.0,
+            fontSize: 14.0,
             color: Colors.white,
           ),
         ),

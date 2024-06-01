@@ -67,22 +67,22 @@ class _SettingPageState extends State<SettingPage> {
                 });
               },
             ),
-            SizedBox(height: 24),
-            Container(
-              constraints: BoxConstraints(minHeight: 30.0),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              child: Column(
-                children: [
-                  DigitalClock(
-                    timeZone: _selectedTimeZone!,
-                  ),
-                ],
-              ),
-            ),
+            // SizedBox(height: 24),
+            // Container(
+            //   constraints: BoxConstraints(minHeight: 30.0),
+            //   alignment: Alignment.center,
+            //   decoration: BoxDecoration(
+            //     color: Colors.white,
+            //     borderRadius: BorderRadius.circular(12.0),
+            //   ),
+            //   child: Column(
+            //     children: [
+            //       DigitalClock(
+            //         timeZone: _selectedTimeZone!,
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),

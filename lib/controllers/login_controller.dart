@@ -12,10 +12,8 @@ class LoginController {
     final usersBox = await Hive.openBox<User>('userBox');
 
     logindata = await SharedPreferences.getInstance();
-    // Inisialisasi variabel untuk menampung user yang ditemukan dan indeksnya
     User? foundUser;
 
-    // Iterasi melalui box untuk menemukan user dengan email yang diberikan
     for (int i = 0; i < usersBox.length; i++) {
       final user = usersBox.getAt(i);
       if (user != null && user.email == email) {
@@ -25,10 +23,9 @@ class LoginController {
       }
     }
 
-    // Periksa apakah user ada dan password cocok
     if (foundUser != null && (BCrypt.checkpw(password, foundUser.password))) {
       print('Login berhasil!');
-      logindata.setBool('login', true);  // Mengasumsikan true berarti sudah login
+      logindata.setBool('login', true);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),

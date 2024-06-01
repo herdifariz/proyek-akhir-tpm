@@ -47,14 +47,6 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> with SingleTicker
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              // Logo
-              Icon(
-                Icons.terrain,
-                size: 100,
-                color: Colors.white,
-              ),
-              SizedBox(height: 20),
-              // Order status text
               Text(
                 'Your Order\nis On The Way',
                 textAlign: TextAlign.center,
@@ -67,7 +59,7 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> with SingleTicker
               SizedBox(height: 20),
               // Delivery icon
               Icon(
-                Icons.delivery_dining,
+                Icons.check_box_rounded,
                 size: 100,
                 color: Colors.white,
               ),
@@ -76,21 +68,20 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> with SingleTicker
               AnimatedBuilder(
                 animation: _animationController,
                 builder: (BuildContext context, Widget? child) {
-                  return LinearProgressIndicator(
+                  return CircularProgressIndicator(
                     backgroundColor: Colors.white.withOpacity(0.3),
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                   );
                 },
               ),
               SizedBox(height: 20),
-              // Total price text
-              Text(
-                'Total : ${widget.totalHarga}', // Display total price here
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-              ),
+              // Text(
+              //   'Total : ${widget.totalHarga}', // Display total price here
+              //   style: TextStyle(
+              //     color: Colors.white,
+              //     fontSize: 18,
+              //   ),
+              // ),
               SizedBox(height: 10),
               // Estimated arrival time text
               Text(
@@ -114,7 +105,7 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> with SingleTicker
                 ),
                 onPressed: () {
                   _clearCart();
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => HomePage()),
                   );

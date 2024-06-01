@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:proyek/screens/cart/cart_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/user.dart';
 import 'component/wishlist_item.dart';
 import '../../models/wishlist.dart';
 import '../../models/product_model.dart';
 import '../product/product_page.dart';
-import '../sidebar/sidebar.dart';
+// import '../sidebar/sidebar.dart';
 
 class WishlistPage extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class WishlistPage extends StatefulWidget {
 }
 
 class _WishlistPageState extends State<WishlistPage> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   List<Wishlist> wishlistItems = [];
 
   @override
@@ -49,52 +50,46 @@ class _WishlistPageState extends State<WishlistPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.menu, color: Colors.deepPurple),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Sidebar()),
-            );
-          },
-        ),
         title: Text('Wishlist', style: TextStyle(color: Colors.deepPurple)),
         actions: [
           IconButton(
             icon: Icon(Icons.shopping_cart, color: Colors.deepPurple),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => CartPage()));
+            },
           )
         ],
       ),
       body: Container(
         color: Colors.deepPurple,
-        child: ListView.builder(
+        child: wishlistItems.isNotEmpty
+            ? ListView.builder(
           itemCount: wishlistItems.length,
           itemBuilder: (context, index) {
-            return GestureDetector(
-              // onTap: () {
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => ProductPage(productData: wishlistItems[index]), // Pass wishlist item to ProductPage
-              //     ),
-              //   );
-              // },
-              child: WishlistItem(
-                wishlistItem: wishlistItems[index],
-                onRemove: () => _removeItemFromList(wishlistItems[index]),
-              ),
+            return WishlistItem(
+              wishlistItem: wishlistItems[index],
+              onRemove: () => _removeItemFromList(wishlistItems[index]),
             );
           },
+        )
+            : Center(
+          child: Text(
+            "Wishlist Kosong",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
         ),
       ),
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (int index) {
           setState(() {
             _selectedIndex = index;
           });
-          if (index == 0) {
+          if (index == 1) {
             Navigator.pushNamed(context, '/home');
           } else if (index == 2) {
             Navigator.pushNamed(context, '/profile');
@@ -102,12 +97,12 @@ class _WishlistPageState extends State<WishlistPage> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: 'Wishlist',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

@@ -107,17 +107,7 @@ class _HomeCategoryDataState extends State<HomeCategoryData> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            'Categories',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-        ),
+        SizedBox(height: 20,),
         GridView.count(
           crossAxisCount: 3,
           crossAxisSpacing: 4.0,
@@ -188,7 +178,7 @@ class _HomeCategoryDataState extends State<HomeCategoryData> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Products',
+                'All Products',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

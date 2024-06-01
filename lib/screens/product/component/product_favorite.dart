@@ -49,13 +49,18 @@ class _ProductFavoriteState extends State<ProductFavorite> {
       final currentUser = userBox.getAt(accIndex);
       print(currentUser!.email);
       if (currentUser != null) {
-        final wishListItem = Wishlist(widget.title, widget.price, widget.imageUrl);
-        currentUser.wishlists.add(wishListItem);
-        userBox.put(accIndex, currentUser);
-        print(currentUser.wishlists);
-        setState(() {
-          isFavorited = true;
-        });
+        bool itemExists = currentUser.wishlists.any((item) => item.name == widget.title);
+        if (!itemExists) {
+          final wishListItem = Wishlist(widget.title, widget.price, widget.imageUrl);
+          currentUser.wishlists.add(wishListItem);
+          userBox.put(accIndex, currentUser);
+          print(currentUser.wishlists);
+          setState(() {
+            isFavorited = true;
+          });
+        } else {
+          print('Item already exists in the wishlist');
+        }
       }
     }
   }

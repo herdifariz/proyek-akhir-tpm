@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:proyek/screens/addon/saran.dart';
+import 'package:proyek/screens/kesanpesan/saran.dart';
 import 'package:proyek/screens/login/login_page.dart';
 import 'package:proyek/screens/settings/setting.dart';
-import 'package:proyek/screens/wishlist/wishlist_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'component/sidebar_app_bar.dart';
 import 'component/user_info.dart';
@@ -27,16 +26,6 @@ class Sidebar extends StatelessWidget {
             child: UserInfo(),
           ),
           SidebarItem(
-            icon: Icons.favorite,
-            text: 'Wishlist',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => WishlistPage()),
-              );
-            },
-          ),
-          SidebarItem(
             icon: Icons.settings,
             text: 'Settings',
             onTap: () {
@@ -47,12 +36,12 @@ class Sidebar extends StatelessWidget {
             },
           ),
           SidebarItem(
-            icon: Icons.person_2,
-            text: 'Pesan Kesan',
+            icon: Icons.article,
+            text: 'Saran dan Kesan',
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PesanPage()),
+                  MaterialPageRoute(builder: (context) => KesanPesanPage()),
                 );
             },
           ),

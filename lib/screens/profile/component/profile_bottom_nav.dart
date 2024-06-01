@@ -20,12 +20,12 @@ class _ProfileBottomNavState extends State<ProfileBottomNav> {
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.favorite),
           label: 'Wishlist',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
@@ -37,9 +37,9 @@ class _ProfileBottomNavState extends State<ProfileBottomNav> {
       unselectedItemColor: Colors.grey,
       onTap: (index) {
         widget.onItemTapped(index);
-        if (index == 0) {
+        if (index == 1) {
           Navigator.pushReplacementNamed(context, '/home');
-        } else if (index == 1) {
+        } else if (index == 0) {
           Navigator.pushReplacementNamed(context, '/wishlist');
         } else if (index == 2) {
           Navigator.pushReplacementNamed(context, '/profile');

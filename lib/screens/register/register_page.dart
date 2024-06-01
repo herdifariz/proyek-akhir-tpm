@@ -24,8 +24,8 @@ class _RegisterPageState extends State<RegisterPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Registration Failed'),
-          content: Text('Please check your input and try again.'),
+          title: Text('Registration Gagal'),
+          content: Text('Silakan cek input'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -62,6 +62,9 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFF6200EE),
+      ),
       backgroundColor: Color(0xFF6200EE),
       body: Center(
         child: SingleChildScrollView(
@@ -74,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   height: 20,
                 ),
                 Icon(
-                  Icons.ac_unit,
+                  Icons.computer_sharp,
                   size: 100,
                   color: Colors.white,
                 ),
@@ -161,26 +164,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 SizedBox(
                   height: 10,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                    );
-                  },
-                  child: Text(
-                    'Back to Login',
-                    style: TextStyle(color: Color(0xFF6200EE)),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    minimumSize: Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: BorderSide(color: Color(0xFF6200EE)),
-                    ),
-                  ),
                 ),
                 SizedBox(
                   height: 20,

@@ -46,20 +46,19 @@ class ProductCategoryData extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         // Menyusun children dari Column ke kiri
         children: [
+          SizedBox(height: 16,),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Products on\t${categoryName.toUpperCase()}',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+            child: Center(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Text(
+                '${categoryName.toUpperCase()} Products',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
-              ],
+              ),
             ),
           ),
           GridView.builder(

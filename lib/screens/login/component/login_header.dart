@@ -6,13 +6,13 @@ class LoginHeader extends StatelessWidget {
     return Column(
       children: [
         Icon(
-          Icons.ac_unit, // Ganti dengan logo Anda
+          Icons.computer_sharp, // Ganti dengan logo Anda
           size: 100,
           color: Colors.white,
         ),
         SizedBox(height: 20),
         Text(
-          'Welcome Back',
+          'Welcome to Electronic Shop App',
           style: TextStyle(
             color: Colors.white,
             fontSize: 24,

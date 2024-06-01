@@ -29,9 +29,8 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
   Future<void> openUserBox() async {
     logindata = await SharedPreferences.getInstance();
     int? accIndex = logindata.getInt("accIndex");
-    print(accIndex);
-    userBox = await Hive.openBox<User>('userBox');
     if (accIndex != null) {
+      userBox = await Hive.openBox<User>('userBox');
       setState(() {
         currentUser = userBox.getAt(accIndex);
       });
@@ -41,10 +40,9 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
   }
 
   Future<void> _loadAvatar() async {
-    if (currentUser!.avatar != null) {
+    if (currentUser != null && currentUser!.avatar != null) {
       setState(() {
         _image = File(currentUser!.avatar!);
-        print(_image);
       });
     } else {
       print('Avatar path is null or user is null');
@@ -54,11 +52,10 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
   Future<void> _pickImage() async {
     try {
       final pickedFile =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
+      await ImagePicker().pickImage(source: ImageSource.gallery);
 
       if (pickedFile != null) {
         profileController.updateAvatar(pickedFile.path, context);
-        print(pickedFile.path);
         setState(() {
           _image = File(pickedFile.path);
         });
@@ -79,19 +76,19 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
         children: [
           Align(
             alignment: Alignment.center,
-            child: _image!.path == ''
+            child: _image == null || _image!.path.isEmpty
                 ? Icon(
-                    Icons.person,
-                    size: 100,
-                  )
+              Icons.person,
+              size: 100,
+            )
                 : ClipOval(
-                    child: Image.file(
-                      _image!,
-                      fit: BoxFit.cover,
-                      width: 180,
-                      height: 180,
-                    ),
-                  ),
+              child: Image.file(
+                _image!,
+                fit: BoxFit.cover,
+                width: 180,
+                height: 180,
+              ),
+            ),
           ),
           Align(
             alignment: Alignment.bottomRight,

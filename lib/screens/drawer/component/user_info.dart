@@ -37,12 +37,18 @@ class _UserInfoState extends State<UserInfo> {
     return Row(
       children: [
         CircleAvatar(
-          radius: 60.0,
+          radius: 60,
           backgroundColor: Colors.white,
-          // child: Image.file(File(currentUser!.avatar!)),
           child: currentUser!.avatar == ''
               ? Icon(Icons.person, size: 100,)
-              : Image.file(File(currentUser!.avatar!)),
+              : ClipOval(
+            child: Image.file(File(
+                currentUser!.avatar!),
+              fit: BoxFit.cover,
+              width: 180,
+              height: 180,
+            ),
+          ),
         ),
         SizedBox(width: 20.0),
         Column(
@@ -54,7 +60,7 @@ class _UserInfoState extends State<UserInfo> {
             SizedBox(height: 8.0),
             Text(currentUser!.phone, style: TextStyle(color: Colors.white)),
             SizedBox(height: 4.0),
-            Text(currentUser!.email, style: TextStyle(color: Colors.white)),
+            Text(currentUser!.address, style: TextStyle(color: Colors.white)),
           ],
         ),
       ],

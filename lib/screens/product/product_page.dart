@@ -15,18 +15,26 @@ class ProductPage extends StatelessWidget {
       appBar: ProductAppBar(),
       body: SingleChildScrollView(
         child: Container(
+          constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height -
+                  (MediaQuery.of(context).padding.top + kToolbarHeight)),
           color: Colors.deepPurple,
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              ProductInfo(productData: productData,),
-              // Spacer(),
-              ProductActions(productData: productData,),
+              ProductInfo(
+                productData: productData,
+              ),
+              SizedBox(height: 20,),
+              // ProductActions(
+              //   productData: productData,
+              // ),
             ],
           ),
         ),
       ),
+      floatingActionButton: ProductActions(productData: productData,),
     );
   }
 }
